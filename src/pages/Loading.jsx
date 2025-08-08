@@ -1,49 +1,81 @@
 import React from 'react';
-import styles from './loading.module.css';
+import styles from './Loading.module.css';
 
-// 이미지 import 방식 (require 사용 X)
-import cloudLeft from '../assets/image1.png';
-import cloudRight from '../assets/image2.png';
+import cloudTop from '../assets/cloud-top.png';
+import cloudBottom from '../assets/cloud-bottom.png';
+import cloudLeft from '../assets/cloud-left.png';
+import cloudRight from '../assets/cloud-right.png';
 
 function Loading({ percent }) {
-    // 걷힘 진행 정도에 따라 X축 이동 px 계산 (최대 300px 이동)
-    const maxMove = 300;
-    const leftCloudX = (-percent / 100) * maxMove;
-    const rightCloudX = (percent / 100) * maxMove;
+    // 최대 이동 픽셀 (화면 밖으로 사라지도록)
+    const maxMoveY = 180; // 상/하 구름 (180px)
+    const maxMoveX = 220; // 좌/우 구름 (220px)
+
+    // percent 기준 사방 이동 계산 (걷히는 만큼)
+    // 0%일때    : 구름이 화면 중앙에 겹침
+    // 100%일때  : 구름이 화면 밖으로 모두 이동
+
+    const topCloudY = (-percent / 100) * maxMoveY; // 위에서 위로 이동
+    const bottomCloudY = (percent / 100) * maxMoveY; // 아래서 아래로 이동
+    const leftCloudX = (-percent / 100) * maxMoveX; // 왼쪽에서 왼쪽으로 이동
+    const rightCloudX = (percent / 100) * maxMoveX; // 오른쪽에서 오른쪽으로 이동
 
     return (
         <div className={styles.loadingContainer}>
-            {/* 왼쪽 구름: 중앙에서 왼쪽(-X)으로 이동 */}
+            {/* 구름 -- 사방 배치 */}
             <img
-                src={cloudLeft}
-                alt="왼쪽구름"
-                className={styles.cloud}
+                src={cloudTop}
+                alt="top cloud"
+                className={`${styles.cloud} ${styles.cloudTop}`}
                 style={{
+                    top: 0,
                     left: '50%',
-                    transform: `translateX(calc(-100% + ${leftCloudX}px))`,
+                    transform: `translate(-50%, ${topCloudY}px)`,
                 }}
             />
-            {/* 오른쪽 구름: 중앙에서 오른쪽(+X)으로 이동 */}
+            <img
+                src={cloudBottom}
+                alt="bottom cloud"
+                className={`${styles.cloud} ${styles.cloudBottom}`}
+                style={{
+                    bottom: 0,
+                    left: '50%',
+                    transform: `translate(-50%, ${bottomCloudY}px)`,
+                }}
+            />
+            <img
+                src={cloudLeft}
+                alt="left cloud"
+                className={`${styles.cloud} ${styles.cloudLeft}`}
+                style={{
+                    left: 0,
+                    top: '50%',
+                    transform: `translate(${leftCloudX}px, -50%)`,
+                }}
+            />
             <img
                 src={cloudRight}
-                alt="오른쪽구름"
-                className={styles.cloud}
+                alt="right cloud"
+                className={`${styles.cloud} ${styles.cloudRight}`}
                 style={{
-                    left: '50%',
-                    transform: `translateX(${rightCloudX}px)`,
+                    right: 0,
+                    top: '50%',
+                    transform: `translate(${rightCloudX}px, -50%)`,
                 }}
             />
 
-            {/* 중앙 텍스트/프로그레스바 */}
+            {/* 가운데 텍스트 · 타이틀 */}
             <div className={styles.centerContent}>
-                <h1>MEA MAPPA CAELESTISddd</h1>
+                <h1>MEA MAPPA CAELESTIS</h1>
                 <p>SINCE 2025</p>
-                <div className={styles.progressSection}>
-                    <div className={styles.progressBar}>
-                        <div className={styles.progressFill} style={{ width: `${percent}%` }} />
-                    </div>
-                    <span className={styles.percentText}>{percent}%</span>
+            </div>
+
+            {/* 진행률 · 프로그레스바 (중앙 아래) */}
+            <div className={styles.progressSection}>
+                <div className={styles.progressBar}>
+                    <div className={styles.progressFill} style={{ width: `${percent}%` }}></div>
                 </div>
+                <div className={styles.percentText}>{percent}%</div>
             </div>
         </div>
     );

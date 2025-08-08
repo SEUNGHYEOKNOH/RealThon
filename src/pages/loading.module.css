@@ -3,65 +3,115 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    font-family: Arial, sans-serif;
-    background: #222; /* 원하는 배경 */
+    font-family: Arial, Helvetica, sans-serif;
+    background: radial-gradient(ellipse at center, #395576 65%, #152538 100%);
 }
 
+/* 구름 4방향 공통 스타일 */
 .cloud {
     position: absolute;
-    top: 0;
-    width: 50vw;
-    height: 100vh;
-    object-fit: cover;
+    width: 60vw;
+    min-width: 380px; /* 크기 원하는만큼 조절 */
+    height: 40vh;
+    object-fit: contain;
     z-index: 1;
     pointer-events: none;
-    transition: transform 0.8s cubic-bezier(0.83, 0, 0.17, 1);
+    transition: transform 1.1s cubic-bezier(0.83, 0, 0.17, 1);
+    opacity: 0.93;
 }
 
+/* 각 구름 방향 별 추가 배치 */
+.cloudTop {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.cloudBottom {
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.cloudLeft {
+    left: 0;
+    top: 50%;
+    width: 36vw;
+    min-width: 200px;
+    height: 82vh;
+    transform: translate(0, -50%);
+}
+.cloudRight {
+    right: 0;
+    top: 50%;
+    width: 36vw;
+    min-width: 200px;
+    height: 82vh;
+    transform: translate(0, -50%);
+}
+
+/* 중앙 타이틀/소제목 */
 .centerContent {
-    position: relative;
+    position: absolute;
     z-index: 2;
-    width: 100%;
-    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -54%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    width: 80vw;
+    text-align: center;
+    user-select: none;
 }
 
 .centerContent h1 {
     margin: 0;
-    font-size: 2.5rem;
-    color: #fff;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    font-size: 2.7rem;
+    font-weight: 400;
+    color: #ffffff;
+    letter-spacing: 0.08em;
+    text-shadow: 0 4px 16px rgba(40, 70, 160, 0.35);
 }
 .centerContent p {
-    margin: 10px 0 30px 0;
-    font-size: 1.2rem;
-    color: #fff;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    margin: 16px 0 32px 0;
+    font-size: 1.05rem;
+    color: #ffffff;
+    letter-spacing: 0.14em;
+    text-shadow: 0 2px 8px rgba(16, 32, 64, 0.12);
 }
 
 .progressSection {
+    position: absolute;
+    left: 50%;
+    bottom: 75px;
+    transform: translateX(-50%);
+    width: 340px;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    z-index: 3;
 }
+
 .progressBar {
-    width: 300px;
+    width: 100%;
     height: 5px;
-    background-color: #eee;
     border-radius: 3px;
-    margin-right: 10px;
     overflow: hidden;
+    margin-bottom: 13px;
 }
 .progressFill {
     height: 100%;
-    background-color: #fff;
+    background: linear-gradient(90deg, #ffffff 0%, #ffffff 100%);
     border-radius: 3px;
-    transition: width 0.3s ease;
+    transition: width 0.3s cubic-bezier(0.83, 0, 0.17, 1);
 }
+
 .percentText {
-    font-size: 1rem;
-    color: #fff;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    font-size: 1.22rem;
+    color: #ffffff;
+    font-family: inherit;
+    font-weight: 300;
+    letter-spacing: 0.07em;
+    text-shadow: 0 2px 8px rgba(60, 90, 180, 0.15);
+    text-align: center;
+    margin-top: 0px;
 }
