@@ -1,0 +1,73 @@
+.headerContainer {
+    position: fixed; /* 항상 화면 최상단에 고정 */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 62px; /* 헤더 높이: Main 컨텐츠에는 padding-top: 62px으로 맞추세요 */
+    background: linear-gradient(90deg, #20304b 80%, #28354e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+    padding: 0 26px;
+    box-sizing: border-box;
+    box-shadow: 0 3px 10px rgba(18, 28, 50, 0.08);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* 햄버거 메뉴 버튼 */
+.menuButton {
+    border: none;
+    background: transparent;
+    font-size: 2.2rem;
+    color: #e7edff;
+    cursor: pointer;
+    padding: 0 12px 0 0;
+    margin-right: 8px;
+    outline: none;
+    transition: background 0.14s;
+}
+.menuButton:hover {
+    background: rgba(52, 71, 110, 0.18);
+    border-radius: 4px;
+}
+.menuIcon {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+/* 사이트 타이틀 영역 */
+.titleSection {
+    font-size: 1.14rem;
+    font-weight: 500;
+    color: #e4eafa;
+    letter-spacing: 0.11em;
+    margin-right: auto;
+    margin-left: 14px;
+    white-space: nowrap;
+    user-select: none;
+    text-shadow: 0 2px 10px rgba(16, 36, 95, 0.13);
+}
+
+/* 로그인/로그아웃/회원가입 버튼 영역 */
+.authSection {
+    display: flex;
+    align-items: center;
+}
+
+.authButton {
+    background: transparent;
+    color: #c6dafc;
+    border: none;
+    font-size: 1rem;
+    padding: 0 10px;
+    margin-left: 6px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.12s, color 0.13s;
+}
+.authButton:hover {
+    background: #304972;
+    color: #ffffff;
+}

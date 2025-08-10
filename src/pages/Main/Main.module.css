@@ -1,0 +1,52 @@
+.mainContainer {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(ellipse at center, #395576 65%, #152538 100%);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cloudBottom {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 110vw; /* 필요 시 조정 */
+    min-width: 800px; /* 필요 시 조정 */
+    height: auto;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.97; /* 자연스럽게 */
+}
+
+.centerContent {
+    position: relative;
+    z-index: 2;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: -9vh; /* 필요시 위치 조정 */
+    user-select: none;
+}
+
+.centerContent h1 {
+    margin: 0;
+    font-size: 2.8rem;
+    font-weight: 400;
+    color: #e4eafa;
+    letter-spacing: 0.05em;
+    text-shadow: 0 4px 16px rgba(40, 70, 160, 0.29);
+}
+
+.centerContent p {
+    margin: 16px 0 0 0;
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: #b8c6e4;
+    letter-spacing: 0.14em;
+    text-shadow: 0 2px 8px rgba(16, 32, 64, 0.15);
+}
