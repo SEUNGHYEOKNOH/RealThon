@@ -39,9 +39,13 @@ secManual : 16 ~1/2,000sec
             justify="center"
             align="center"
         >
-            <Flex>
+            <Box
+                w="1200px"
+                pr="20px"
+            >
                 <Box
-                    mr="-50px"
+                    mx="-50px"
+                    float="left"
                 >
                     <Image
                         src={PhoneFrame}
@@ -65,7 +69,7 @@ secManual : 16 ~1/2,000sec
                     </Text>
 
                     <Flex
-                        w="757px"
+                        maxW="757px"
                         h="350px"
 
                         border="1px solid black"
@@ -101,7 +105,7 @@ sdfpiojpsodfjpo
                         </Box>
                     </Flex>
                 </Box>
-            </Flex>
+            </Box>
         </Flex>
     );
 }
