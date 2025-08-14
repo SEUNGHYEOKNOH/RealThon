@@ -4,24 +4,25 @@ import Loading from '../../components/ui/Loading/Loading';
 import styles from './Main.module.css';
 
 import { Canvas, useFrame } from '@react-three/fiber';
-import { DoubleSide, Color, Texture, LinearFilter } from 'three';
+import * as THREE from 'three';
+import { TextureLoader } from 'three';
 
-// 섹션 데이터: 텍스트만 사용
+// 섹션 데이터
 const SECTIONS = [
-    { id: 1, label: 'SECTION 1', title: 'SECTION 1', color: '#df0808' },
-    { id: 2, label: 'SECTION 2', title: 'SECTION 2', color: '#03457b' },
-    { id: 3, label: 'SECTION 3', title: 'SECTION 3', color: '#027458' },
-    { id: 4, label: 'SECTION 4', title: 'SECTION 4', color: '#5c8797' },
+    { id: 1, label: 'SECTION 1', title: 'SECTION 1', color: '#df0808', imageUrl: '/textures/sec1.png' },
+    { id: 2, label: 'SECTION 2', title: 'SECTION 2', color: '#03457b', imageUrl: '/textures/sec1.png' },
+    { id: 3, label: 'SECTION 3', title: 'SECTION 3', color: '#027458', imageUrl: '/textures/sec1.png' },
+    { id: 4, label: 'SECTION 4', title: 'SECTION 4', color: '#5c8797', imageUrl: '/textures/sec1.png' },
 ];
 
-/* 텍스트만 캔버스에 그려 Texture 생성 (이미지 사용 안 함) */
+// 라벨 텍스처(텍스트만) – 필요 시 유지
 function useTextTexture({
     title,
     textColor = '#ffffff',
-    width = 1024,
-    height = 256,
+    width = 2048,
+    height = 512,
     bg = 'transparent',
-    fontScale = 0.45, // 높이에 대한 비율
+    fontScale = 0.45,
     fontFamily = 'sans-serif',
 }) {
     return useMemo(() => {
@@ -30,91 +31,200 @@ function useTextTexture({
         canvas.height = height;
         const ctx = canvas.getContext('2d');
 
-        // 배경
         if (bg !== 'transparent') {
             ctx.fillStyle = bg;
             ctx.fillRect(0, 0, width, height);
+        } else {
+            ctx.clearRect(0, 0, width, height);
         }
 
-        // 텍스트
         ctx.fillStyle = textColor;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.font = `bold ${Math.floor(height * fontScale)}px ${fontFamily}`;
         ctx.fillText(title || '', width * 0.5, height * 0.5);
 
-        const texture = new Texture(canvas);
+        const texture = new THREE.Texture(canvas);
         texture.needsUpdate = true;
-        texture.minFilter = LinearFilter;
-        texture.magFilter = LinearFilter;
+        texture.minFilter = THREE.LinearFilter;
+        texture.magFilter = THREE.LinearFilter;
         return texture;
     }, [title, textColor, width, height, bg, fontScale, fontFamily]);
 }
 
-/* 섹션 곡면(본체) + 텍스트 라벨(얇은 곡면 띠) */
-function SectionSlice({ radius, height, thetaStart, thetaLength, color, title, visible = true }) {
-    // 본체 머티리얼(불투명)
-    const materialProps = useMemo(
-        () => ({
-            color: new Color(color),
-            side: DoubleSide,
+function SectionSlice({
+    id,
+    radius,
+    height,
+    thetaStart,
+    thetaLength,
+    color,
+    title,
+    imageUrl,
+    visible = true,
+    showLabel = true,
+}) {
+    // 본체 이미지 텍스처
+    const baseTexture = useMemo(() => {
+        if (!imageUrl) return null;
+        const loader = new TextureLoader();
+        const tex = loader.load(imageUrl);
+        tex.wrapS = THREE.ClampToEdgeWrapping;
+        tex.wrapT = THREE.ClampToEdgeWrapping;
+        tex.repeat.set(1, 1);
+        tex.offset.set(0, 0);
+        tex.minFilter = THREE.LinearFilter;
+        tex.magFilter = THREE.LinearFilter;
+        return tex;
+    }, [imageUrl]);
+
+    const baseMaterial = useMemo(() => {
+        if (baseTexture) {
+            return new THREE.MeshStandardMaterial({
+                map: baseTexture,
+                color: new THREE.Color('#ffffff'),
+                side: THREE.FrontSide,
+                transparent: false,
+                opacity: 1,
+            });
+        }
+        return new THREE.MeshStandardMaterial({
+            color: new THREE.Color(color),
+            side: THREE.FrontSide,
             transparent: false,
             opacity: 1,
-        }),
-        [color]
-    );
+        });
+    }, [baseTexture, color]);
 
-    // 텍스트만으로 만든 라벨 텍스처
     const labelTexture = useTextTexture({
         title: title || '',
         textColor: '#ffffff',
-        bg: 'transparent',
     });
 
-    // 라벨 곡면(본체 위 살짝)
     const radiusLabel = radius + 0.02;
-    const labelHeight = Math.max(0.3, height * 0.32);
+    const labelHeight = Math.max(0.3, height * 0.28);
 
     return (
         <group visible={visible}>
-            {/* 섹션 본체 */}
             <mesh>
-                <cylinderGeometry args={[radius, radius, height, 64, 1, false, thetaStart, thetaLength]} />
-                <meshStandardMaterial {...materialProps} />
+                <cylinderGeometry args={[radius, radius, height, 96, 1, false, thetaStart, thetaLength]} />
+                <primitive object={baseMaterial} attach="material" />
             </mesh>
 
-            {/* 텍스트 라벨(같은 곡률 띠) */}
-            <mesh>
-                <cylinderGeometry
-                    args={[radiusLabel, radiusLabel, labelHeight, 64, 1, true, thetaStart, thetaLength]}
-                />
-                <meshStandardMaterial
-                    map={labelTexture}
-                    transparent={true}
-                    opacity={1}
-                    side={DoubleSide}
-                    color={'#ffffff'}
-                />
-            </mesh>
+            {showLabel && labelTexture && (
+                <mesh>
+                    <cylinderGeometry
+                        args={[radiusLabel, radiusLabel, labelHeight, 96, 1, true, thetaStart, thetaLength]}
+                    />
+                    <meshStandardMaterial
+                        map={labelTexture}
+                        color={'#ffffff'}
+                        side={THREE.DoubleSide}
+                        transparent={true}
+                        depthWrite={true}
+                        opacity={1}
+                    />
+                </mesh>
+            )}
         </group>
     );
 }
 
-/* 그룹 회전 + 뒤쪽 섹션 가리기 */
-function CurvedCylinder({ sections, radius = 20, height = 12, wheelSensitivity = 0.003 }) {
+function CurvedCylinder({
+    sections,
+    radius = 20,
+    height = 12,
+    wheelSensitivity = 0.003,
+    scrollMode, // 'horizontal' | 'vertical'
+    setScrollMode, // setter
+    onEnterVertical, // 수직 전환 콜백
+    startAtHalfBetween14 = true,
+}) {
     const groupRef = useRef();
-    const [rotationY, setRotationY] = useState(0);
 
+    // 회전 상태
+    const [rotationY, _setRotationY] = useState(0);
+    const rotationYRef = useRef(0);
+    const setRotationY = (v) => {
+        rotationYRef.current = v;
+        _setRotationY(v);
+    };
+
+    // 시작 각도 저장(랩 어라운드 판단 기준)
+    const startAngleRef = useRef(0);
+    // 총 회전한 “정규화 회전수” 추적(방향 무관 절대 회전수)
+    const revolutionsRef = useRef(0);
+    const lastAngleRef = useRef(0);
+
+    // 시작 각도를 섹션4-1 중간으로 설정
     useEffect(() => {
-        const onWheel = (e) => setRotationY((r) => r + e.deltaY * wheelSensitivity);
-        window.addEventListener('wheel', onWheel, { passive: true });
-        return () => window.removeEventListener('wheel', onWheel);
-    }, [wheelSensitivity]);
+        if (!startAtHalfBetween14) return;
+        const total = sections.length;
+        const thetaLen = (2 * Math.PI) / total;
 
+        const thetaMid4 = 3 * thetaLen + thetaLen / 2;
+        const thetaMid1 = 0 * thetaLen + thetaLen / 2;
+
+        let delta = thetaMid1 - thetaMid4;
+        delta = Math.atan2(Math.sin(delta), Math.cos(delta));
+        const halfBetween = thetaMid4 + delta / 2;
+
+        setRotationY(halfBetween);
+        startAngleRef.current = halfBetween;
+        lastAngleRef.current = halfBetween;
+        revolutionsRef.current = 0;
+    }, [sections.length, startAtHalfBetween14]);
+
+    // 수평 모드에서만 휠 가로채기 + 회전/전환 로직
+    useEffect(() => {
+        if (scrollMode !== 'horizontal') return;
+
+        // 페이지 수직 스크롤 방지: 수평 모드에서는 wheel을 소비한다
+        const onWheel = (e) => {
+            e.preventDefault(); // 문서 스크롤 방지 (핵심 1)
+            const delta = e.deltaY * wheelSensitivity;
+            const prev = rotationYRef.current;
+            let next = prev + delta;
+
+            // 각도 정규화(-π~π) 대신, 연속적으로 이어가되 비교 시 모듈러 사용
+            setRotationY(next);
+
+            // 회전수(rev) 추적: 이전각과 현재각의 차이를 -π~π로 정규화해 누적
+            let d = next - lastAngleRef.current;
+            // -π~π로 정규화
+            d = Math.atan2(Math.sin(d), Math.cos(d));
+            lastAngleRef.current = lastAngleRef.current + d; // 연속각 업데이트
+            // 절대 회전수 누적
+            revolutionsRef.current += Math.abs(d) / (2 * Math.PI);
+
+            // “시작점으로 돌아옴” 판단:
+            // - 최소 1바퀴 이상 돌아야 함
+            // - 현재각과 시작각의 차이를 2π 모듈러로 0 근처인지 확인
+            const angleNow = rotationYRef.current;
+            const startAngle = startAngleRef.current;
+
+            let diff = angleNow - startAngle;
+            // -π~π로 정규화
+            diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+            const closeToStart = Math.abs(diff) < 0.05; // 임계값(라디안) 조정 가능
+
+            if (revolutionsRef.current >= 1.0 && closeToStart) {
+                setScrollMode('vertical'); // 수직 모드로 전환
+                onEnterVertical?.();
+            }
+        };
+
+        // passive:false로 등록해야 preventDefault 가능
+        window.addEventListener('wheel', onWheel, { passive: false });
+        return () => window.removeEventListener('wheel', onWheel);
+    }, [scrollMode, wheelSensitivity, setScrollMode, onEnterVertical]);
+
+    // 그룹 회전 적용
     useFrame(() => {
-        if (groupRef.current) groupRef.current.rotation.y = rotationY;
+        if (groupRef.current) groupRef.current.rotation.y = rotationYRef.current;
     });
 
+    // 섹션 가시성
     const total = sections.length;
     const thetaLen = (2 * Math.PI) / total;
 
@@ -123,20 +233,22 @@ function CurvedCylinder({ sections, radius = 20, height = 12, wheelSensitivity =
             {sections.map((sec, idx) => {
                 const thetaStart = idx * thetaLen;
                 const thetaMid = thetaStart + thetaLen / 2;
-                const worldMid = thetaMid + rotationY;
-                // 앞면만 보이게 (임계값으로 경계 깜빡임 완화)
+                const worldMid = thetaMid + rotationYRef.current;
                 const facingCamera = Math.cos(worldMid) > 0.12;
 
                 return (
                     <SectionSlice
                         key={sec.id}
+                        id={sec.id}
                         radius={radius}
                         height={height}
                         thetaStart={thetaStart}
                         thetaLength={thetaLen}
                         color={sec.color}
                         title={sec.title || sec.label}
+                        imageUrl={sec.imageUrl || ''}
                         visible={facingCamera}
+                        showLabel={true}
                     />
                 );
             })}
@@ -147,6 +259,9 @@ function CurvedCylinder({ sections, radius = 20, height = 12, wheelSensitivity =
 export default function Main() {
     const [percent, setPercent] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+
+    // 스크롤 모드: 수평 → 수직
+    const [scrollMode, setScrollMode] = useState('horizontal');
 
     // 인트로 로딩
     useEffect(() => {
@@ -171,6 +286,19 @@ export default function Main() {
 
     if (isLoading) return <Loading percent={percent} />;
 
+    // 수직 모드 진입 시: 아래로 스무스 스크롤(필요에 맞게 수정)
+    const handleEnterVertical = () => {
+        setTimeout(() => {
+            window.scrollTo({
+                top: window.innerHeight, // 1뷰포트 아래로
+                behavior: 'smooth',
+            });
+        }, 50);
+    };
+
+    // 수평 단계에서는 페이지 스크롤을 막고, 수직으로 바뀐 뒤에는 기본 스크롤 허용
+    // body/css 쪽에서 overflow-y는 기본으로 두면 됨
+
     return (
         <div className={styles.mainWrapper}>
             <Header />
@@ -178,10 +306,22 @@ export default function Main() {
                 <Canvas camera={{ position: [0, 0, 28], fov: 24 }} dpr={[1, 2]}>
                     <ambientLight intensity={0.8} />
                     <directionalLight position={[8, 10, 6]} intensity={1.0} />
-                    {/* 화면 꽉 차게 보이도록 radius/height 조정 */}
-                    <CurvedCylinder sections={SECTIONS} radius={13} height={8} wheelSensitivity={0.003} />
+                    <CurvedCylinder
+                        sections={SECTIONS}
+                        radius={14}
+                        height={7}
+                        wheelSensitivity={0.003}
+                        scrollMode={scrollMode}
+                        setScrollMode={setScrollMode}
+                        onEnterVertical={handleEnterVertical}
+                        startAtHalfBetween14={true}
+                    />
                 </Canvas>
             </div>
+
+            {/* 아래 실제 콘텐츠(데모용) */}
+            <div style={{ width: '100%', height: '100vh', background: '#0b1220' }} />
+            <div style={{ width: '100%', height: '100vh', background: '#101826' }} />
         </div>
     );
 }
