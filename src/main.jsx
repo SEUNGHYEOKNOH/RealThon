@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './index.css';
 
 import Main from './pages/Main/Main.jsx';
-// import OtherPage from './pages/OtherPage.jsx';  // 주석처리 하세요! 파일이 없으면
 
 const queryClient = new QueryClient();
 
@@ -17,9 +16,6 @@ createRoot(document.getElementById('root')).render(
                 <Router>
                     <Routes>
                         <Route path="/" element={<Main />} />
-
-                        {/* <Route path="/other" element={<OtherPage />} /> */}
-                        {/* OtherPage.jsx가 없으면 반드시 주석 또는 삭제 */}
                     </Routes>
                 </Router>
             </Provider>
