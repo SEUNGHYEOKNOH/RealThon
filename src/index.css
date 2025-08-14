@@ -1,3 +1,9 @@
+@font-face {
+    font-family: 'JuliusSans';
+    font-weight: normal;
+    src: url('./fonts/JuliusSansOne-Regular.ttf') format('truetype');
+}
+
 :root {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
