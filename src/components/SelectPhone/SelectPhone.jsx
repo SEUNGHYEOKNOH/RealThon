@@ -82,7 +82,7 @@ secManual : 16 ~1/2,000sec
                         >
                             <Text
                                 whiteSpace="pre-wrap"
-                                >
+                            >
                                 {phoneData.data}
                             </Text>
                         </Box>
@@ -91,7 +91,7 @@ secManual : 16 ~1/2,000sec
                         >
                             <Text
                                 whiteSpace="pre-wrap"
-                                >
+                            >
                                 은하수 ㅇ내ㅓ
                                 <br />
 ㅇdsklnfkldnsl
