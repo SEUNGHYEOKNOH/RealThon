@@ -1,11 +1,22 @@
+/* src/index.css - 최종안
+   - Julius Sans One(TTF) 로컬 등록 및 전역 적용
+   - 개별 CSS 모듈에서 @import 하지 말고 여기서만 폰트 선언
+   - 경로: 본 파일(index.css) 기준 ./fonts/JuliusSansOne-Regular.ttf 가 존재해야 함 */
+
+/* 1) 로컬 폰트 등록 */
 @font-face {
     font-family: 'JuliusSans';
-    font-weight: normal;
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
     src: url('./fonts/JuliusSansOne-Regular.ttf') format('truetype');
 }
 
+/* 2) 전역 폰트 스택 변수 및 기본 설정 */
 :root {
-    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    --app-font: 'JuliusSans', system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+    font-family: var(--app-font);
     line-height: 1.5;
     font-weight: 400;
 
@@ -19,6 +30,14 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* 3) 실제 렌더 트리에 폰트 적용 보강 */
+html,
+body,
+#root {
+    font-family: var(--app-font);
+}
+
+/* 4) 기본 전역 스타일 (프로젝트 기본값 유지) */
 a {
     font-weight: 500;
     color: #646cff;
@@ -47,7 +66,7 @@ button {
     padding: 0.6em 1.2em;
     font-size: 1em;
     font-weight: 500;
-    font-family: inherit;
+    font-family: inherit; /* 전역 폰트 상속 */
     background-color: #1a1a1a;
     cursor: pointer;
     transition: border-color 0.25s;
@@ -60,6 +79,7 @@ button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* 5) 라이트 모드 오버라이드 */
 @media (prefers-color-scheme: light) {
     :root {
         color: #213547;

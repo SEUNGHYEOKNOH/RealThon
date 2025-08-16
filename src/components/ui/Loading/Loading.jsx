@@ -1,105 +1,111 @@
 // src/components/ui/Loading/Loading.jsx
+// - 요구사항: 6개 구름 각각의 움직임(거리)과 속도(지속시간)를 개별 제어
+// - 방식:
+//   1) percent(0~100)를 0~1로 정규화해 --t로 CSS에 전달.
+//   2) 개별 이미지마다 커스텀 CSS 변수 전달:
+//      - 위로 사라지는 타입(raiseUpToOut): --rise, --extraRise, --dur, --ease
+//      - 아래로 이동 타입(lowerToHalf): --downRatio, --dur, --ease
+//   3) 값만 바꾸면 개별 속도/거리 튜닝 가능.
+
 import React from 'react';
 import styles from './Loading.module.css';
 
-// 이미지 경로는 기존 프로젝트 구조에 맞춰 조정하세요.
-// 경로 주의: ui/Loading에서 assets까지 3단계 위로 올라감!
 import cloudTop from '../../../assets/cloud-top.png';
 import cloudBottom from '../../../assets/cloud-bottom.png';
 import cloudLeft from '../../../assets/cloud-left.png';
 import cloudRight from '../../../assets/cloud-right.png';
 
-/*
-  props:
-    - percent: 0~100 로딩 진행률
-  동작:
-    - 상/하 구름은 Y축 이동(topCloudY, bottomCloudY)
-    - 좌/우 구름은 X축 이동(leftCloudX, rightCloudX)
-  개별 제어:
-    - 각 이미지에 방향 공통 클래스 + 인덱스별 고유 클래스 부여
-      예) className={`${styles.cloud} ${styles.cloudTop} ${styles.top0}`}
-*/
 function Loading({ percent = 0 }) {
-    // 최대 이동량(뷰포트 크기에 따라 조절 가능)
-    const maxMoveY = 180;
-    const maxMoveX = 220;
-
-    // 로딩 비율에 따른 이동값 계산
-    const topCloudY = (-percent / 100) * maxMoveY;
-    const bottomCloudY = (percent / 100) * maxMoveY;
-    const leftCloudX = (-percent / 100) * maxMoveX;
-    const rightCloudX = (percent / 100) * maxMoveX;
-
-    // 3개씩 출력
-    const triple = [0, 1, 2];
+    const t = Math.max(0, Math.min(1, percent / 100));
 
     return (
         <div className={styles.loadingContainer}>
-            {/* 상단 구름 3개: 각자 width/left/opacity/z-index/transition-delay를 CSS에서 개별 제어 */}
-            {triple.map((i) => (
-                <img
-                    key={`top-${i}`}
-                    src={cloudTop}
-                    alt={`top cloud ${i + 1}`}
-                    className={`${styles.cloud} ${styles.cloudTop} ${styles['top' + i]}`}
-                    // 이동량은 공통으로 percent 기반 적용, 필요시 index별 배율/방향 분기 가능
-                    style={{
-                        transform: `translate(-50%, ${topCloudY}px)`,
-                    }}
-                />
-            ))}
+            {/* 위로 이동 후 화면 밖: top0, top1, left0 */}
+            <img
+                src={cloudTop}
+                alt="top cloud 1"
+                className={`${styles.cloud} ${styles.cloudTop} ${styles.top0} ${styles.raiseUpToOut}`}
+                style={{
+                    '--t': t,
+                    '--dur': '1.2s', // 지속시간(더 빠르게: 작게, 더 느리게: 크게)
+                    '--ease': 'cubic-bezier(0.35,0.25,0.45,1)',
+                    '--rise': '260px', // 0~95% 상승 거리
+                    '--extraRise': '340px', // 95~100% 추가 상승(화면 밖)
+                }}
+            />
+            <img
+                src={cloudTop}
+                alt="top cloud 2"
+                className={`${styles.cloud} ${styles.cloudTop} ${styles.top1} ${styles.raiseUpToOut}`}
+                style={{
+                    '--t': t, // 진행률(0~1) - 건들지 않음
+                    '--dur': '1.0s', // 지속시간(속도) ← 여기 수정
+                    '--ease': 'cubic-bezier(0.35,0.25,0.40,1)', // 보간(가감속) ← 여기 수정
+                    '--rise': '460px', // 0~95% 상향 이동량 ← 여기 수정
+                    '--extraRise': '240px', // 95~100% 추가 상승(화면 밖) ← 여기 수정
+                }}
+            />
+            <img
+                src={cloudLeft}
+                alt="left cloud 1"
+                className={`${styles.cloud} ${styles.cloudLeft} ${styles.left0} ${styles.raiseUpToOut}`}
+                style={{
+                    '--t': t,
+                    '--dur': '0.4s',
+                    '--ease': 'cubic-bezier(0.25,0.55,0.20,1)',
+                    '--rise': '280px',
+                    '--extraRise': '220px',
+                }}
+            />
 
-            {/* 하단 구름 3개 */}
-            {triple.map((i) => (
-                <img
-                    key={`bottom-${i}`}
-                    src={cloudBottom}
-                    alt={`bottom cloud ${i + 1}`}
-                    className={`${styles.cloud} ${styles.cloudBottom} ${styles['bottom' + i]}`}
-                    style={{
-                        transform: `translate(-50%, ${bottomCloudY}px)`,
-                    }}
-                />
-            ))}
+            {/* 아래로 이동: bottom1, bottom2, right1 */}
+            <img
+                src={cloudBottom}
+                alt="bottom cloud 1"
+                className={`${styles.cloud} ${styles.cloudBottom} ${styles.bottom1} ${styles.lowerToHalf}`}
+                style={{
+                    '--t': t,
+                    '--dur': '1.1s',
+                    '--ease': 'cubic-bezier(0.45,0,0.55,1)',
+                    '--downRatio': '0.5', // 0.5=50vh, 0.4=40vh 등으로 거리 조절
+                }}
+            />
+            <img
+                src={cloudBottom}
+                alt="bottom cloud 2"
+                className={`${styles.cloud} ${styles.cloudBottom} ${styles.bottom2} ${styles.lowerToHalf}`}
+                style={{
+                    '--t': t,
+                    '--dur': '1.3s',
+                    '--ease': 'cubic-bezier(0.5,0,0.2,1)',
+                    '--downRatio': '0.42',
+                }}
+            />
+            <img
+                src={cloudRight}
+                alt="right cloud 1"
+                className={`${styles.cloud} ${styles.cloudRight} ${styles.right1} ${styles.lowerToHalf}`}
+                style={{
+                    '--t': t,
+                    '--dur': '1.6s',
+                    '--ease': 'cubic-bezier(0.35,0,0.65,1)',
+                    '--downRatio': '0.55',
+                }}
+            />
 
-            {/* 왼쪽 구름 3개 */}
-            {triple.map((i) => (
-                <img
-                    key={`left-${i}`}
-                    src={cloudLeft}
-                    alt={`left cloud ${i + 1}`}
-                    className={`${styles.cloud} ${styles.cloudLeft} ${styles['left' + i]}`}
-                    style={{
-                        transform: `translate(${leftCloudX}px, -50%)`,
-                    }}
-                />
-            ))}
+            <div className={styles.box} />
 
-            {/* 오른쪽 구름 3개 */}
-            {triple.map((i) => (
-                <img
-                    key={`right-${i}`}
-                    src={cloudRight}
-                    alt={`right cloud ${i + 1}`}
-                    className={`${styles.cloud} ${styles.cloudRight} ${styles['right' + i]}`}
-                    style={{
-                        transform: `translate(${rightCloudX}px, -50%)`,
-                    }}
-                />
-            ))}
-
-            {/* 중앙 타이틀/소제목 */}
             <div className={styles.centerContent}>
-                <h1>MEA MAPPA CAELESTIS</h1>
-                <p>SINCE 2025</p>
-            </div>
-
-            {/* 진행률 바 & 퍼센트 */}
-            <div className={styles.progressSection}>
-                <div className={styles.progressBar}>
-                    <div className={styles.progressFill} style={{ width: `${percent}%` }} />
+                <div className={styles.headlineRow}>
+                    <h1>Mea mappa caelestis</h1>
+                    <p>SINCE 2025</p>
                 </div>
-                <div className={styles.percentText}>{percent}%</div>
+                <div className={styles.progressSection}>
+                    <div className={styles.progressBar}>
+                        <div className={styles.progressFill} style={{ width: `${percent}%` }} />
+                    </div>
+                    <div className={styles.percentText}>{percent}%</div>
+                </div>
             </div>
         </div>
     );

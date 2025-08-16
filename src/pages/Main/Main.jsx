@@ -10,9 +10,9 @@ import { TextureLoader } from 'three';
 // 섹션 데이터
 const SECTIONS = [
     { id: 1, label: 'SECTION 1', title: 'SECTION 1', color: '#df0808', imageUrl: '/textures/sec1.png' },
-    { id: 2, label: 'SECTION 2', title: 'SECTION 2', color: '#03457b', imageUrl: '/textures/sec1.png' },
-    { id: 3, label: 'SECTION 3', title: 'SECTION 3', color: '#027458', imageUrl: '/textures/sec1.png' },
-    { id: 4, label: 'SECTION 4', title: 'SECTION 4', color: '#5c8797', imageUrl: '/textures/sec1.png' },
+    { id: 2, label: 'SECTION 2', title: 'SECTION 2', color: '#03457b', imageUrl: '/textures/sec2.png' },
+    { id: 3, label: 'SECTION 3', title: 'SECTION 3', color: '#027458', imageUrl: '/textures/sec3.png' },
+    { id: 4, label: 'SECTION 4', title: 'SECTION 4', color: '#5c8797', imageUrl: '/textures/sec4.png' },
 ];
 
 // 라벨 텍스처(텍스트만) – 필요 시 유지
@@ -263,27 +263,52 @@ export default function Main() {
     // 스크롤 모드: 수평 → 수직
     const [scrollMode, setScrollMode] = useState('horizontal');
 
-    // 인트로 로딩
+    // 로딩 시간 제어 로직 해설 + 원하는 시간으로 바꾸는 방법 예시
+    // - 아래 코드는 percent(0→100)로 진행률을 올리면서 인트로 표시 시간을 "구간별"로 조절합니다.
+    // - 각 구간의 setTimeout / setInterval 지연(ms)을 변경하면 전체 로딩 체감 시간이 바뀝니다.
+
     useEffect(() => {
+        // isLoading이 false면 아무 것도 하지 않음
         if (!isLoading) return;
+
+        // 1) 시작 지연: percent가 0일 때 400ms 대기 후 1%로 이동
+        //    -> 첫 진입 연출(페이드인 느낌). 더 빠르게 하려면 400을 줄이세요.
         if (percent === 0) {
-            const wait = setTimeout(() => setPercent(1), 400);
+            const wait = setTimeout(() => setPercent(1), 900);
             return () => clearTimeout(wait);
         }
-        if (percent > 0 && percent < 90) {
-            const interval = setInterval(() => setPercent((p) => Math.min(p + 1, 90)), 18);
+
+        // 2) 본 진행(0~90%): 18ms마다 +1% (즉, 1% 증가에 18ms)
+        //    -> 1% 당 시간 = 18ms, 총 89%를 올리므로 대략 18ms * 89 ≈ 1.6초
+        //    -> 더 천천히: 18을 크게, 더 빠르게: 18을 작게
+        if (percent > 0 && percent < 55) {
+            const interval = setInterval(() => setPercent((p) => Math.min(p + 1, 90)), 120);
             return () => clearInterval(interval);
         }
-        if (percent >= 90 && percent < 100) {
-            const interval = setInterval(() => setPercent((p) => Math.min(p + 1, 100)), 70);
+
+        if (percent >= 55 && percent < 85) {
+            const interval = setInterval(() => setPercent((p) => Math.min(p + 1, 90)), 90);
             return () => clearInterval(interval);
         }
+
+        // 3) 마무리(90~100%): 70ms마다 +1% (즉, 1% 증가에 70ms)
+        //    -> 마지막 10%에 약 700ms로 '여운'을 줌
+        //    -> 더 빨리 끝내려면 70을 줄이고, 더 느린 피니시를 원하면 70을 키우세요.
+        if (percent >= 85 && percent < 100) {
+            const interval = setInterval(() => setPercent((p) => Math.min(p + 1, 100)), 170);
+            return () => clearInterval(interval);
+        }
+
+        // 4) 완료 후 유지 시간: 100% 도달 후 550ms 뒤 isLoading=false로 전환
+        //    -> 완료 화면이 잠깐 머물게 하는 연출
+        //    -> 즉시 닫히게 하려면 550을 줄이거나 0으로
         if (percent === 100) {
             const timeout = setTimeout(() => setIsLoading(false), 550);
             return () => clearTimeout(timeout);
         }
     }, [percent, isLoading]);
 
+    // 로딩 표시
     if (isLoading) return <Loading percent={percent} />;
 
     // 수직 모드 진입 시: 아래로 스무스 스크롤(필요에 맞게 수정)
@@ -308,8 +333,8 @@ export default function Main() {
                     <directionalLight position={[8, 10, 6]} intensity={1.0} />
                     <CurvedCylinder
                         sections={SECTIONS}
-                        radius={14}
-                        height={7}
+                        radius={12}
+                        height={8.5}
                         wheelSensitivity={0.003}
                         scrollMode={scrollMode}
                         setScrollMode={setScrollMode}
