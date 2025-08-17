@@ -9,6 +9,8 @@ import './index.css';
 import Main from './pages/Main/Main.jsx';
 // import OtherPage from './pages/OtherPage.jsx';  // 주석처리 하세요! 파일이 없으면
 import ActivityMap from './components/ActivityMap/ActivityMap.jsx'; // for test
+import Login from './pages/Login/Login.jsx'; // for test
+import Signup from './pages/Signup/Signup.jsx'; // for test
 
 const queryClient = new QueryClient();
 
@@ -24,6 +26,8 @@ createRoot(document.getElementById('root')).render(
                         {/* OtherPage.jsx가 없으면 반드시 주석 또는 삭제 */}
                         {/* for test */}
                         <Route path="/activitymap" element={<ActivityMap />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<Signup />} />
                     </Routes>
                 </Router>
             </Provider>
