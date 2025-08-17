@@ -13,7 +13,9 @@ import './index.css';
 
 // 페이지 컴포넌트
 import Main from './pages/Main/Main.jsx';
+
 // import OtherPage from './pages/OtherPage.jsx';  // 주석처리 하세요! 파일이 없으면
+import ActivityMap from './components/ActivityMap/ActivityMap.jsx'; // for test
 
 // 리액트 쿼리 클라이언트 생성
 const queryClient = new QueryClient();
@@ -32,7 +34,10 @@ createRoot(document.getElementById('root')).render(
 
                         {/* 다른 라우트는 파일 생성 전까지 주석 처리 */}
                         {/* <Route path="/other" element={<OtherPage />} /> */}
+
                         {/* OtherPage.jsx가 없으면 반드시 주석 또는 삭제 */}
+                        {/* for test */}
+                        <Route path="/activitymap" element={<ActivityMap />} />
                     </Routes>
                 </Router>
             </Provider>

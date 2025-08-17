@@ -3,7 +3,7 @@
     height: 100%;
     min-height: 100vh;
     overflow-x: hidden; /* 수평 스크롤 막음 */
-    background: linear-gradient(to bottom, #000000 10%, #21415b 40%, #5889a4 75%, #5c8797 100%);
+    background: linear-gradient(to bottom, #000000 50%, rgb(132, 138, 148) 50%);
     position: relative;
 }
 

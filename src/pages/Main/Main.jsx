@@ -6,13 +6,16 @@ import styles from './Main.module.css';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { TextureLoader } from 'three';
+import ChoicePhone from '@/components/ChoicePhone/ChoicePhone';
+import SelectPhone from '@/components/SelectPhone/SelectPhone';
+import ActivityMap from '@/components/ActivityMap/ActivityMap';
 
 // 섹션 데이터
 const SECTIONS = [
-    { id: 1, label: 'SECTION 1', title: 'SECTION 1', color: '#df0808', imageUrl: '/textures/sec1.png' },
-    { id: 2, label: 'SECTION 2', title: 'SECTION 2', color: '#03457b', imageUrl: '/textures/sec2.png' },
-    { id: 3, label: 'SECTION 3', title: 'SECTION 3', color: '#027458', imageUrl: '/textures/sec3.png' },
-    { id: 4, label: 'SECTION 4', title: 'SECTION 4', color: '#5c8797', imageUrl: '/textures/sec4.png' },
+    { id: 1, label: 'SECTION 1', title: 'SECTION 1', color: '#ffffffff', imageUrl: '/textures/sec1.png' },
+    { id: 2, label: 'SECTION 2', title: 'SECTION 2', color: '#ffffffff', imageUrl: '/textures/sec2.png' },
+    { id: 3, label: 'SECTION 3', title: 'SECTION 3', color: '#ffffffff', imageUrl: '/textures/sec3.png' },
+    { id: 4, label: 'SECTION 4', title: 'SECTION 4', color: '#ffffffff', imageUrl: '/textures/sec4.png' },
 ];
 
 // 라벨 텍스처(텍스트만) – 필요 시 유지
@@ -345,8 +348,12 @@ export default function Main() {
             </div>
 
             {/* 아래 실제 콘텐츠(데모용) */}
+
             <div style={{ width: '100%', height: '100vh', background: '#0b1220' }} />
             <div style={{ width: '100%', height: '100vh', background: '#101826' }} />
+            <ChoicePhone />
+            <SelectPhone />
+            <ActivityMap />
         </div>
     );
 }

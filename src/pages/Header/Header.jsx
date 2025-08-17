@@ -6,11 +6,6 @@ import styles from './Header.module.css';
 function Header({ isLoggedIn, onSignIn, onSignUp, onLogout }) {
     return (
         <header className={styles.headerContainer}>
-            {/* 햄버거 메뉴 */}
-            <button className={styles.menuButton} aria-label="메뉴">
-                <span className={styles.menuIcon}>☰</span>
-            </button>
-
             {/* 사이트 타이틀 */}
             <div className={styles.titleSection}>MEA MAPPA CAELESTIS</div>
 
@@ -24,9 +19,6 @@ function Header({ isLoggedIn, onSignIn, onSignUp, onLogout }) {
                     <>
                         <button className={styles.authButton} onClick={onSignIn}>
                             Sign In
-                        </button>
-                        <button className={styles.authButton} onClick={onSignUp}>
-                            Sign Up
                         </button>
                     </>
                 )}
