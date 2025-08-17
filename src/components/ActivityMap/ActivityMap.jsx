@@ -3,6 +3,7 @@ import { Flex, Box, Text, Image, Input, Button } from '@chakra-ui/react';
 import { useColorModeValue } from "@/components/ui/color-mode"
 
 import KoreaMap from './KoreaMap.jsx';
+import GeocodingReverse from '@/components/Misc/GeocodingReverse.jsx'; // 지역명 찾기
 
 import SearchCircle1 from '@/assets/SearchCircle.svg';
 import SearchCircle2 from '@/assets/SearchCircle2.svg';
@@ -69,7 +70,7 @@ export default function ActivityMap() {
                         maxW="430px"
                         whiteSpace="pre-wrap"
                     >
-                        경상북도 구미시 옥계동
+                        {GeocodingReverse(lat, lon)}
 <br /><br />
 촬영 레벨 : n단계
 <br /><br />
