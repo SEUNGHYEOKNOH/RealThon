@@ -1,0 +1,185 @@
+/* =========================
+   Sky 배경 전체
+   - 화면 전체를 fixed로 덮고 컨텐츠 뒤로 보이게 함
+   ========================= */
+.sky {
+    position: fixed;
+    inset: 0; /* 전체 화면 덮기 */
+    z-index: -1; /* 콘텐츠 뒤 */
+    overflow: hidden;
+    pointer-events: none; /* 배경은 포인터 차단 (별/그룹 요소는 개별적으로 활성화) */
+}
+
+/* 하늘 그라디언트 */
+.gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(#0a1526 0%, #122643 45%, #1a2f4f 70%, #243552 100%);
+}
+
+/* =========================
+   별/별자리
+   ========================= */
+
+/* 별 레이어 컨테이너 (필요시 배치용) */
+.starsLayer,
+.constellationsLayer {
+    position: absolute;
+    inset: 0;
+}
+.constellationsLayer {
+    pointer-events: none;
+} /* 그룹 자체는 배경 취급 */
+
+/* 단일 별
+   - 반짝임(twinkle) + 미세한 수직 드리프트(drift)
+   - hover 필요하므로 포인터 허용
+*/
+.star {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, #ffd7a8 0%, #ffc670 35%, #ff9b3d 60%, rgba(255, 153, 61, 0) 70%);
+    box-shadow: 0 0 6px 2px rgba(255, 200, 120, 0.7), 0 0 16px 6px rgba(255, 160, 70, 0.25);
+    filter: saturate(1.1);
+    transform: translate(-50%, -50%);
+    animation: twinkle 2.6s linear infinite, drift var(--drift-duration, 10s) ease-in-out infinite;
+    pointer-events: auto;
+    will-change: transform, opacity, filter;
+}
+
+/* 별 반짝임 */
+@keyframes twinkle {
+    0%,
+    100% {
+        opacity: 0.9;
+        filter: brightness(1);
+    }
+    50% {
+        opacity: 0.45;
+        filter: brightness(1.25);
+    }
+}
+
+/* 별 미세 드리프트(상하 왕복) */
+@keyframes drift {
+    0%,
+    100% {
+        transform: translate(-50%, calc(-50% - var(--drift-amplitude, 6px)));
+    }
+    50% {
+        transform: translate(-50%, calc(-50% + var(--drift-amplitude, 6px)));
+    }
+}
+
+/* 별자리 그룹 컨테이너
+   - 내부 별은 그룹의 중심(50%,50%) 기준 상대 배치
+   - 그룹 전체를 좌→우로 이동시키는 애니메이션 적용
+*/
+.constellation {
+    position: absolute;
+    width: 0;
+    height: 0; /* 기준점만 갖고 내부 별만 보이게 */
+    transform: translate(-50%, -50%);
+    animation: constellationMove var(--const-move-duration, 120s) linear infinite;
+    animation-delay: var(--const-move-delay, 0s);
+    pointer-events: auto; /* 그룹 hover 시 별자리 툴팁 표시 */
+}
+
+/* 별자리 수평 이동 (왼쪽 밖 → 오른쪽 밖) */
+@keyframes constellationMove {
+    0% {
+        transform: translate(calc(-50% - 60vw), -50%);
+    }
+    100% {
+        transform: translate(calc(-50% + 60vw), -50%);
+    }
+}
+
+/* 별/별자리 툴팁 공통 스타일 */
+.tooltip {
+    position: absolute;
+    transform: translate(-50%, calc(-100% - 12px));
+    background: rgba(12, 18, 32, 0.9);
+    color: #ffdcae;
+    border: 1px solid rgba(255, 206, 150, 0.3);
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 1.3;
+    white-space: nowrap;
+    pointer-events: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+/* 별자리 툴팁 추가 보정(멀티라인 대비) */
+.constTooltip {
+    max-width: 240px;
+    text-align: left;
+}
+
+/* =========================
+   구름 (무한 루프)
+   - 같은 이미지를 가로 반복(repeat-x)하여 200vw 폭에서
+     translateX(0 → -100vw)로 이동하면 끊김 없이 순환
+   ========================= */
+.cloud {
+    position: absolute;
+    left: 0;
+    bottom: -2vh;
+    width: 200vw; /* 반복 루프 폭 */
+    height: 45vh;
+    pointer-events: none;
+    background-repeat: repeat-x;
+    background-size: auto 100%; /* 세로에 맞추고 가로는 원본폭 반복 */
+    opacity: 0.85;
+    filter: blur(0.4px) saturate(1.05);
+    animation: cloudLoop 80s linear infinite;
+    will-change: transform;
+}
+
+/* 레이어 개별 설정: 이미지/높이/불투명도/속도 */
+.cloudNear {
+    background-image: url('../../assets/cloud1.png');
+    height: 48vh;
+    opacity: 0.95;
+    animation-duration: 120s; /* 가장 느림(가까워 보이도록) */
+}
+
+.cloudMid {
+    background-image: url('../../assets/cloud3.png');
+    bottom: 2vh;
+    height: 40vh;
+    opacity: 0.8;
+    animation-duration: 90s;
+}
+
+.cloudFar {
+    background-image: url('../../assets/cloud3.png'); /* 없으면 cloud1 대체 가능 */
+    bottom: 6vh;
+    height: 34vh;
+    opacity: 0.6;
+    animation-duration: 70s; /* 가장 빠름(먼 원근) */
+}
+
+/* 구름 무한 루프: 왼쪽으로 천천히 이동하면 오른쪽 가장자리가
+   repeat-x로 이어져 보이며, -100vw 도달 시 자연스럽게 다시 시작 */
+@keyframes cloudLoop {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100vw);
+    }
+}
+
+/* =========================
+   반응형 보정
+   ========================= */
+@media (max-width: 768px) {
+    .tooltip {
+        font-size: 11px;
+    }
+    .cloud {
+        height: 38vh;
+    }
+}
