@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Flex, Box, Text, Image, Input, Button, List, ListItem } from '@chakra-ui/react';
+import { Flex, Box, Text, Image, Input, Button, List, useBreakpointValue } from '@chakra-ui/react';
 import { useColorModeValue } from "@/components/ui/color-mode"
 
 import KoreaMap from './KoreaMap.jsx';
@@ -14,6 +14,7 @@ export default function ActivityMap() {
     const [lon, setLon] = useState(null);
 
     const isLightMode = useColorModeValue(true, false);
+    const isMobile = useBreakpointValue({ base: true, md: false });
 
     // --- 검색 기능 상태 ---
     const [searchTerm, setSearchTerm] = useState('');
@@ -142,12 +143,13 @@ export default function ActivityMap() {
         <Flex
             justifyContent="center"
             alignItems="center"
-            h="100vh"
             w="100vw"
         >
             <Flex
-                gap="200px"
+                gap={isMobile ? "20px" : "200px"}
                 alignItems="center"
+
+                direction={isMobile ? "column" : "row"}
             >
                 <Box>
                     <KoreaMap
@@ -254,7 +256,7 @@ export default function ActivityMap() {
                     </Text>
 
                     <Button
-                        mt="20px"
+                        my="20px"
                         w="100%"
                         h="50px"
                         bg="#000"

@@ -1,8 +1,11 @@
-import { Box, Flex, Image, Text } from '@chakra-ui/react';
+import { Box, Flex, Image, Text, useBreakpointValue } from '@chakra-ui/react';
 
 import PhoneFrame from '@/assets/PhoneFrame.png';
 
 export default function SelectPhone() {
+    const isMobile = useBreakpointValue({ base: true, md: false });
+
+
     const phoneData = {
         name: 'Galaxy S25',
         model: 'BEST SHOT',
@@ -32,20 +35,43 @@ secManual : 16 ~1/2,000sec
     };
 
     return (
-        <Flex w="100vw" h="100vh" justify="center" align="center">
-            <Box w="1200px" pr="20px">
-                <Box mx="-50px" float="left">
-                    <Image src={PhoneFrame} alt="Phone Frame" h="503px" />
+        <Flex
+            w="100vw"
+            justify="center"
+            align="center"
+        >
+            <Flex
+                w="1200px"
+                p="20px"
+
+                direction={isMobile ? "column" : "row"}
+                alignItems="center"
+            >
+                <Box
+                    float="left"
+                >
+                    <Image
+                        src={PhoneFrame}
+                        alt="Phone Frame"
+                        h={isMobile ? "200px" : "503px"}
+                    />
                 </Box>
-                <Box py="20px">
+                <Box
+                    py="20px"
+                    w="100%"
+                >
                     <Text fontSize="40px">Galaxy S25</Text>
                     <Text fontSize="20px">BEST SHOT</Text>
 
-                    <Flex maxW="757px" h="350px" border="1px solid black" overflowY="scroll">
-                        <Box w="50%">
+                    <Flex
+                        h="350px"
+                        border="1px solid black"
+                        overflowY="scroll"
+                    >
+                        <Box>
                             <Text whiteSpace="pre-wrap">{phoneData.data}</Text>
                         </Box>
-                        <Box w="50%">
+                        <Box>
                             <Text whiteSpace="pre-wrap">
                                 은하수 ㅇ내ㅓ
                                 <br />
@@ -60,7 +86,7 @@ secManual : 16 ~1/2,000sec
                         </Box>
                     </Flex>
                 </Box>
-            </Box>
+            </Flex>
         </Flex>
     );
 }
