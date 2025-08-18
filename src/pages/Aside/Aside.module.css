@@ -7,7 +7,7 @@
     /* 필요 시 고정 높이: height: 120vh; */
     /* 상하 여백이 필요하면 padding 추가 */
     box-sizing: border-box;
-    background: linear-gradient(#ffffff00 20%, #ffffff00 20%, #24355200 0%, #f4f4f4 100%);
+    background: linear-gradient(#ffffff00 20%, #ffffff00 20%, #24355200 0%, #f4f4f4de 100%);
 }
 
 /* 구름들을 담는 영역: 화면 전체에 포지셔닝 */

@@ -13,7 +13,7 @@ export default function Main() {
     const [percent, setPercent] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (!isLoading) return;
         if (percent === 0) {
             const wait = setTimeout(() => setPercent(1), 900);
@@ -38,7 +38,7 @@ export default function Main() {
         }
     }, [percent, isLoading]);
 
-    if (isLoading) return <Loading percent={percent} />;
+    if (isLoading) return <Loading percent={percent} />; */
 
     return (
         <div className={styles.mainWrapper}>

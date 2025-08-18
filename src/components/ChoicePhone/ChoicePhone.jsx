@@ -6,7 +6,7 @@ import SearchCircle from '@/assets/SearchCircle.svg';
 
 export default function ChoicePhone() {
     return (
-        <Box bg="#f4f4f4" minH="100vh">
+        <Box bg="#f4f4f4de" minH="100vh">
             <Flex direction="column" justify="center" w="100vw" h="100vh">
                 <Flex justify="center" w="100%">
                     <Text fontSize="30px">SELECT DEVICE</Text>

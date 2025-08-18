@@ -34,7 +34,7 @@ secManual : 16 ~1/2,000sec
     };
 
     return (
-        <Box bg="#f4f4f4" minH="100vh">
+        <Box bg="#f4f4f4de" minH="100vh">
             <Flex w="100vw" h="100vh" justify="center" align="center">
                 <Box w="1200px" pr="20px">
                     <Box mx="-50px" float="left">

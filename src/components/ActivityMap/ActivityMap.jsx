@@ -139,7 +139,7 @@ export default function ActivityMap() {
     const locationName = getAreaByLatLngDetailed(lat, lon);
 
     return (
-        <Box bg="#f4f4f4" minH="100vh">
+        <Box bg="#f4f4f4de" minH="100vh">
             <Flex justifyContent="center" alignItems="center" h="100vh" w="100vw">
                 <Flex gap="200px" alignItems="center">
                     <Box>
@@ -246,8 +246,10 @@ export default function ActivityMap() {
                         </Text>
 
                         <Button
+                            marginRight="10%"
+                            marginLeft="10%"
                             mt="20px"
-                            w="100%"
+                            w="40%"
                             h="50px"
                             bg="#000"
                             color="#fff"
@@ -262,6 +264,25 @@ export default function ActivityMap() {
                             }}
                         >
                             사진 업로드
+                        </Button>
+
+                        <Button
+                            mt="20px"
+                            w="40%"
+                            h="50px"
+                            bg="#ffffffff"
+                            color="#000000ff"
+                            outline="none"
+                            border="none"
+                            _hover={{
+                                bg: '#333',
+                            }}
+                            _focus={{
+                                outline: 'none',
+                                border: 'none',
+                            }}
+                        >
+                            내 앨범 보기
                         </Button>
                     </Box>
                 </Flex>
