@@ -77,6 +77,7 @@ export default function KoreaMap({ setLat, setLon, lat, lon }) {
             position="relative"
             width="100%"
             maxWidth="800px" // 이미지 최대 너비 설정
+            height="auto"
             mx="auto"
             borderRadius="md"
             overflow="hidden"

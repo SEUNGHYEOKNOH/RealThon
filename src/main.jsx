@@ -18,6 +18,9 @@ import Main from './pages/Main/Main.jsx';
 import ActivityMap from './components/ActivityMap/ActivityMap.jsx'; // for test
 import Login from './pages/Login/Login.jsx'; // for test
 import Signup from './pages/Signup/Signup.jsx'; // for test
+import MyActivityMap from './components/MyActivityMap/MyActivityMap.jsx'; // for test
+import ChoicePhone from './components/ChoicePhone/ChoicePhone';
+import SelectPhone from './components/SelectPhone/SelectPhone.jsx'; // for test
 
 // 리액트 쿼리 클라이언트 생성
 const queryClient = new QueryClient();
@@ -40,8 +43,12 @@ createRoot(document.getElementById('root')).render(
                         {/* OtherPage.jsx가 없으면 반드시 주석 또는 삭제 */}
                         {/* for test */}
                         <Route path="/activitymap" element={<ActivityMap />} />
+                        <Route path="/choicephone" element={<ChoicePhone />} />
+                        <Route path="/selectphone" element={<SelectPhone />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
+                        <Route path="/myactivitymap" element={<MyActivityMap />} />
+                        
                     </Routes>
                 </Router>
             </Provider>
