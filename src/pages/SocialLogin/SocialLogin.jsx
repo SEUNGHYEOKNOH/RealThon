@@ -1,10 +1,11 @@
 import React from 'react';
 import { Flex, Button, VStack, Heading, Icon, Text } from '@chakra-ui/react';
-import { useColorModeValue } from "@/components/ui/color-mode";
+import { useColorModeValue } from '@/components/ui/color-mode';
 // Social media icons
-import { RiKakaoTalkFill } from "react-icons/ri"; // KakaoTalk icon
-import { SiNaver } from "react-icons/si"; // Naver icon
-import { FcGoogle } from "react-icons/fc"; // Google icon
+import { RiKakaoTalkFill } from 'react-icons/ri'; // KakaoTalk icon
+import { SiNaver } from 'react-icons/si'; // Naver icon
+import { FcGoogle } from 'react-icons/fc'; // Google icon
+import MyBackgroundImage from '../../assets/INTRO1.png';
 
 // Social media login page component
 export default function SocialLogin() {
@@ -22,7 +23,8 @@ export default function SocialLogin() {
             alignItems="center"
             h="100vh"
             w="100vw"
-            bg={useColorModeValue('gray.50', 'gray.800')}
+            bgImage={`url(${MyBackgroundImage})`}
+            bgSize="cover"
         >
             <Flex
                 direction="column"
@@ -32,7 +34,7 @@ export default function SocialLogin() {
                 borderRadius="xl"
                 boxShadow="lg"
                 gap={4}
-                w={{ base: "90%", md: "450px" }}
+                w={{ base: '90%', md: '450px' }}
             >
                 <Heading as="h1" size="lg" mb={6} textAlign="center">
                     Welcome!
@@ -52,12 +54,12 @@ export default function SocialLogin() {
                         borderRadius="lg"
                         onClick={() => handleSocialLogin('kakao')}
                         _hover={{
-                            bg: "#F2DA00",
+                            bg: '#F2DA00',
                             transform: 'translateY(-2px)',
                             boxShadow: 'lg',
-                            outline: "none"
+                            outline: 'none',
                         }}
-                        _focus={{ outline: "none" }}
+                        _focus={{ outline: 'none' }}
                         transition="all 0.2s"
                     >
                         <Icon as={RiKakaoTalkFill} mr={2} w={6} h={6} />
@@ -75,12 +77,12 @@ export default function SocialLogin() {
                         borderRadius="lg"
                         onClick={() => handleSocialLogin('naver')}
                         _hover={{
-                            bg: "#02B54D",
+                            bg: '#02B54D',
                             transform: 'translateY(-2px)',
                             boxShadow: 'lg',
-                            outline: "none"
+                            outline: 'none',
                         }}
-                        _focus={{ outline: "none" }}
+                        _focus={{ outline: 'none' }}
                         transition="all 0.2s"
                     >
                         <Icon as={SiNaver} mr={2} w={5} h={5} />
@@ -100,9 +102,9 @@ export default function SocialLogin() {
                         _hover={{
                             bg: buttonHoverBg,
                             transform: 'translateY(-2px)',
-                            boxShadow: 'lg'
+                            boxShadow: 'lg',
                         }}
-                        _focus={{ outline: "none" }}
+                        _focus={{ outline: 'none' }}
                         transition="all 0.2s"
                     >
                         <Icon as={FcGoogle} mr={2} w={6} h={6} />
