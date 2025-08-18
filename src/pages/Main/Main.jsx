@@ -32,7 +32,7 @@ export default function Main() {
                 <div className={styles.scrollSection}>
                     <div className={styles.sectionHero}></div>
                 </div>
-                <div className={styles.scrollSection} style={{ backgroundColor: '#f4f4f4de' }}>
+                <div className={styles.scrollSection}>
                     <Aside />
                 </div>
                 <div className={styles.scrollSection} style={{ backgroundColor: '#f4f4f4de' }}>
