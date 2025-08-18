@@ -12,7 +12,8 @@ export default function SocialLogin() {
     const buttonHoverBg = useColorModeValue('gray.100', 'gray.600');
 
     const handleSocialLogin = (platform) => {
-        window.open(`https://realthon.ajb.kr/oauth2/authorization/${platform}`);
+        // 새탭으로 안열리게
+        window.location.href = `https://realthon.ajb.kr/oauth2/authorization/${platform}`;
     };
 
     return (

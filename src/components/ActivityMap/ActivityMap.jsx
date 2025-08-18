@@ -154,7 +154,7 @@ export default function ActivityMap() {
             <Flex justifyContent="center" alignItems="center" h="100vh" w="100vw">
                 <Flex gap="200px" alignItems="center">
                     <Box>
-                        <KoreaMap setLat={setLat} setLon={setLon} selectedLat={lat} selectedLon={lon} />
+                        <KoreaMap setLat={setLat} setLon={setLon} lat={lat} lon={lon} />
                     </Box>
                     <Box>
                         <Text ml="20px" fontSize="20px">
