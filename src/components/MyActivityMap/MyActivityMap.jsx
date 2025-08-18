@@ -45,29 +45,34 @@ export default function MyActivityMap({ setIsOnMyActivityMap }) {
                     Mea mappa caelestis
                 </Text>
             </Flex>
-
-            <Flex
-                justifyContent="center"
-                alignItems="center"
-                direction={isMobile ? 'column' : 'row'}
-                mt="30px"
-                px={isMobile ? '20px' : '200px'}
-                gap={isMobile ? '' : '80px'}
+            
+            <Box
+                h="calc(100% - 100px)"
+                overflowY="scroll"
             >
-                <Box>
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
-                </Box>
+                <Flex
+                    justifyContent="center"
+                    alignItems="center"
+                    direction={isMobile ? 'column' : 'row'}
+                    mt="30px"
+                    px={isMobile ? '20px' : '200px'}
+                    gap={isMobile ? '' : '80px'}
+                    >
+                    <Box>
+                        <Post />
+                        <Post />
+                        <Post />
+                        <Post />
+                    </Box>
 
-                <Box>
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
-                </Box>
-            </Flex>
+                    <Box>
+                        <Post />
+                        <Post />
+                        <Post />
+                        <Post />
+                    </Box>
+                </Flex>
+            </Box>
         </Box>
     );
 }
