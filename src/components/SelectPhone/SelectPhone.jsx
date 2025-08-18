@@ -5,6 +5,7 @@ import PhoneFrame from '@/assets/PhoneFrame.png';
 export default function SelectPhone() {
     const isMobile = useBreakpointValue({ base: true, md: false });
 
+
     const phoneData = {
         name: 'Galaxy S25',
         model: 'BEST SHOT',
@@ -34,37 +35,59 @@ secManual : 16 ~1/2,000sec
     };
 
     return (
-        <Box bg="#f4f4f4de" minH="100vh">
-            <Flex w="100vw" h="100vh" justify="center" align="center">
-                <Box w="1200px" pr="20px">
-                    <Box mx="-50px" float="left">
-                        <Image src={PhoneFrame} alt="Phone Frame" h="503px" />
-                    </Box>
-                    <Box py="20px">
-                        <Text fontSize="40px">Galaxy S25</Text>
-                        <Text fontSize="20px">BEST SHOT</Text>
+        <Flex
+            w="100vw"
+            justify="center"
+            align="center"
+            bg="#f4f4f4de"
+        >
+            <Flex
+                w="1200px"
+                p="20px"
 
-                        <Flex maxW="757px" h="350px" border="1px solid black" overflowY="scroll">
-                            <Box w="50%">
-                                <Text whiteSpace="pre-wrap">{phoneData.data}</Text>
-                            </Box>
-                            <Box w="50%">
-                                <Text whiteSpace="pre-wrap">
-                                    은하수 ㅇ내ㅓ
-                                    <br />
-                                    ㅇdsklnfkldnsl
-                                    <br />
-                                    fisdfiopsdj
-                                    <br />
-                                    fpsidjfpiosdj
-                                    <br />
-                                    sdfpiojpsodfjpo
-                                </Text>
-                            </Box>
-                        </Flex>
-                    </Box>
+                direction={isMobile ? "column" : "row"}
+                alignItems="center"
+            >
+                <Box
+                    float="left"
+                >
+                    <Image
+                        src={PhoneFrame}
+                        alt="Phone Frame"
+                        h={isMobile ? "200px" : "503px"}
+                    />
+                </Box>
+                <Box
+                    py="20px"
+                    w="100%"
+                >
+                    <Text fontSize="40px">Galaxy S25</Text>
+                    <Text fontSize="20px">BEST SHOT</Text>
+
+                    <Flex
+                        h="350px"
+                        border="1px solid black"
+                        overflowY="scroll"
+                    >
+                        <Box>
+                            <Text whiteSpace="pre-wrap">{phoneData.data}</Text>
+                        </Box>
+                        <Box>
+                            <Text whiteSpace="pre-wrap">
+                                은하수 ㅇ내ㅓ
+                                <br />
+                                ㅇdsklnfkldnsl
+                                <br />
+                                fisdfiopsdj
+                                <br />
+                                fpsidjfpiosdj
+                                <br />
+                                sdfpiojpsodfjpo
+                            </Text>
+                        </Box>
+                    </Flex>
                 </Box>
             </Flex>
-        </Box>
+        </Flex>
     );
 }
