@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '../Header/Header';
 import Loading from '@/components/ui/Loading/Loading';
 import styles from './Main.module.css';
+import { useNavigate } from 'react-router-dom';
 
 import Aside from '../Aside/Aside';
 import ChoicePhone from '@/components/ChoicePhone/ChoicePhone';
@@ -13,6 +14,17 @@ export default function Main() {
     const [percent, setPercent] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+
+    const handleSignIn = () => {
+        navigate('/login'); // '/login' 경로로 페이지를 이동시킵니다.
+    };
+
+    const handleLogout = () => {
+        setIsLoggedIn(false);
+        // 로그아웃 API 호출 등 추가 로직 구현
+    };
     /*useEffect(() => {
         if (!isLoading) return;
         if (percent === 0) {
@@ -45,7 +57,7 @@ export default function Main() {
             {/* 하늘/별/구름 전체를 배경으로 깔기 */}
             <Sky />
 
-            <Header />
+            <Header isLoggedIn={isLoggedIn} onSignIn={handleSignIn} onLogout={handleLogout} />
             <div className={styles.sectionHero}></div>
             <Aside />
             <ChoicePhone />

@@ -20,6 +20,7 @@ import Login from './pages/Signin/Signin.jsx'; // for test
 import MyActivityMap from './components/MyActivityMap/MyActivityMap.jsx'; // for test
 import ChoicePhone from './components/ChoicePhone/ChoicePhone';
 import SelectPhone from './components/SelectPhone/SelectPhone.jsx'; // for test
+import SocialLogin from './pages/Signin/Signin.jsx';
 
 // 리액트 쿼리 클라이언트 생성
 const queryClient = new QueryClient();
@@ -44,7 +45,7 @@ createRoot(document.getElementById('root')).render(
                         <Route path="/activitymap" element={<ActivityMap />} />
                         <Route path="/choicephone" element={<ChoicePhone />} />
                         <Route path="/selectphone" element={<SelectPhone />} />
-                        <Route path="/signin" element={<Login />} />
+                        <Route path="/login" element={<SocialLogin />} />
                         <Route path="/my-activity-map" element={<MyActivityMap />} />
                     </Routes>
                 </Router>
