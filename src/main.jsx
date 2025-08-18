@@ -45,8 +45,7 @@ createRoot(document.getElementById('root')).render(
                         <Route path="/choicephone" element={<ChoicePhone />} />
                         <Route path="/selectphone" element={<SelectPhone />} />
                         <Route path="/signin" element={<Login />} />
-                        <Route path="/myactivitymap" element={<MyActivityMap />} />
-                        
+                        <Route path="/my-activity-map" element={<MyActivityMap />} />
                     </Routes>
                 </Router>
             </Provider>

@@ -8,8 +8,19 @@ import getAreaByLatLngDetailed, { fullAreasData } from '@/components/Misc/Geocod
 
 import SearchCircle1 from '@/assets/SearchCircle.svg';
 import SearchCircle2 from '@/assets/SearchCircle2.svg';
+import { useNavigate } from 'react-router-dom';
 
 export default function ActivityMap() {
+    // 2. useNavigate 훅을 실행하여 navigate 함수를 생성합니다.
+    const navigate = useNavigate();
+
+    // 3. 버튼 클릭 시 호출될 함수를 정의합니다.
+    const handleNavigateToAlbum = () => {
+        // '/my-activity-map' 경로로 페이지를 이동시킵니다.
+        // 이 경로는 라우터 설정에 정의된 경로와 일치해야 합니다.
+        navigate('/my-activity-map');
+    };
+
     const [lat, setLat] = useState(null);
     const [lon, setLon] = useState(null);
 
@@ -275,12 +286,14 @@ export default function ActivityMap() {
                             outline="none"
                             border="none"
                             _hover={{
-                                bg: '#333',
+                                bg: '#e2e8f0',
                             }}
                             _focus={{
                                 outline: 'none',
                                 border: 'none',
                             }}
+                            // 4. 버튼의 onClick 이벤트에 위에서 만든 핸들러 함수를 연결합니다.
+                            onClick={handleNavigateToAlbum}
                         >
                             내 앨범 보기
                         </Button>
