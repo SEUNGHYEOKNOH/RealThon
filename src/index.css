@@ -4,19 +4,7 @@
    - 경로: 본 파일(index.css) 기준 ./fonts/JuliusSansOne-Regular.ttf 가 존재해야 함 */
 
 /* 1) 로컬 폰트 등록 */
-
-html,
-body {
-    height: 100%;
-    overflow-y: auto; /* 스크롤은 허용 */
-    -ms-overflow-style: none; /* IE/Edge 구형 */
-    scrollbar-width: none; /* Firefox */
-}
-
-html::-webkit-scrollbar,
-body::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
-}
+/* 레이아웃 기본값 */
 
 @font-face {
     font-family: 'JuliusSans';

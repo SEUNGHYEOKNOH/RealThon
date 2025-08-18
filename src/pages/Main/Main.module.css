@@ -1,15 +1,18 @@
 /* src/pages/Main/Main.module.css */
 
+/*------------------------*/
+
 .mainWrapper {
     position: relative;
-    min-height: 100%;
-    background: transparent; /* Sky에서 배경 처리 */
+    height: 100vh; /* 스크롤 기준을 자신으로 */
+    overflow-y: auto; /* 자신 내부에서 스크롤 발생 */
 
-    /* 스크롤바 숨기기 (크로스 브라우저) */
+    background: transparent;
+
+    /* 스크롤바 숨기기 */
     -ms-overflow-style: none; /* IE/Edge 구형 */
     scrollbar-width: none; /* Firefox */
 }
-
 .mainWrapper::-webkit-scrollbar {
     display: none;
 }
