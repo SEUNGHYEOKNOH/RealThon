@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../Header/Header';
-// import Loading from '@/components/ui/Loading/Loading';
+import Loading from '@/components/ui/Loading/Loading';
 import styles from './Main.module.css';
 
 import Aside from '../Aside/Aside';
@@ -19,6 +19,7 @@ export default function Main() {
             const wait = setTimeout(() => setPercent(1), 900);
             return () => clearTimeout(wait);
         }
+
         if (percent > 0 && percent < 55) {
             const interval = setInterval(() => setPercent((p) => Math.min(p + 1, 90)), 120);
             return () => clearInterval(interval);
