@@ -1,15 +1,26 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Flex, Box, Text, Image, Input, Button, List, useBreakpointValue } from '@chakra-ui/react';
 import { useColorModeValue } from "@/components/ui/color-mode"
+import { useNavigate } from 'react-router-dom';
 
 import KoreaMap from './KoreaMap.jsx';
 // GeocodingReverse.jsx에서 함수와 데이터를 모두 가져옵니다.
 import getAreaByLatLngDetailed, { fullAreasData } from '@/components/Misc/GeocodingReverse.jsx'; 
+import MyActivityMap from '../MyActivityMap/MyActivityMap.jsx';
 
 import SearchCircle1 from '@/assets/SearchCircle.svg';
 import SearchCircle2 from '@/assets/SearchCircle2.svg';
 
 export default function ActivityMap() {
+    const navigate = useNavigate();
+
+    const [isOnMyActivityMap, setIsOnMyActivityMap] = useState(false); // 현재 MyActivityMap이 열려있는지 여부
+
+    // 3. 버튼 클릭 시 호출될 함수를 정의합니다.
+    const handleNavigateToAlbum = () => {
+        setIsOnMyActivityMap(true);
+    };
+
     const [lat, setLat] = useState(null);
     const [lon, setLon] = useState(null);
 
@@ -255,27 +266,69 @@ export default function ActivityMap() {
                         <br /><br />
                         비,  광해 다수
                     </Text>
-
-                    <Button
-                        my="20px"
+                    
+                    <Flex
                         w="100%"
-                        h="50px"
-                        bg="#000"
-                        color="#fff"
-                        outline="none"
-                        border="none"
-                        _hover={{
-                            bg: "#333"
-                        }}
-                        _focus={{
-                            outline: "none",
-                            border: "none"
-                        }}
+                        gap="20px"
                     >
-                        사진 업로드
-                    </Button>
+                        <Button
+                            my="20px"
+                            h="50px"
+                            bg="#000"
+                            color="#fff"
+                            outline="none"
+                            border="none"
+                            _hover={{
+                                bg: "#333"
+                            }}
+                            _focus={{
+                                outline: "none",
+                                border: "none"
+                            }}
+                            >
+                            사진 업로드
+                        </Button>
+
+                        <Button
+                            mt="20px"
+                            h="50px"
+                            bg="#ffffffff"
+                            color="#000000ff"
+                            outline="none"
+                            border="none"
+                            _hover={{
+                                bg: '#e2e8f0',
+                            }}
+                            _focus={{
+                                outline: 'none',
+                                border: 'none',
+                            }}
+                            // 4. 버튼의 onClick 이벤트에 위에서 만든 핸들러 함수를 연결합니다.
+                            onClick={handleNavigateToAlbum}
+                            >
+                            내 앨범 보기
+                        </Button>
+                    </Flex>
                 </Box>
             </Flex>
+
+            {/* 전체화면 오버레이 */}
+            <Box
+                position="fixed"
+                top="0"
+                left="0"
+                right="0"
+                bottom="0"
+                zIndex="overlay"
+
+                transition="all 0.3s ease-in-out"
+
+                transform={isOnMyActivityMap ? 'translateY(0)' : 'translateY(100%)'}
+            >
+                <MyActivityMap
+                    setIsOnMyActivityMap={setIsOnMyActivityMap}
+                />
+            </Box>
         </Flex>
     )
 }
