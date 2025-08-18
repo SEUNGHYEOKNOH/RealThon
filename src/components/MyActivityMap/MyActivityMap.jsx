@@ -17,7 +17,7 @@ export default function MyActivityMap({ setIsOnMyActivityMap }) {
         <Box
             w="100vw"
             h="100vh"
-            bg="#f4f4f4de"
+            bg="#f4f4f4"
         >
             {/* 4. 아이콘을 감싸는 Flex와 Icon 컴포넌트를 수정합니다. */}
             <Flex

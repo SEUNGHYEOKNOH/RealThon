@@ -29,21 +29,21 @@ export default function Main() {
             {/* 스크롤 스냅을 적용할 부모 컨테이너 */}
             <div className={styles.scrollContainer}>
                 {/* 각 스크롤 대상이 될 섹션 */}
-                <section className={styles.scrollSection}>
+                <div className={styles.scrollSection}>
                     <div className={styles.sectionHero}></div>
-                </section>
-                <section className={styles.scrollSection}>
+                </div>
+                <div className={styles.scrollSection} style={{ backgroundColor: '#f4f4f4de' }}>
                     <Aside />
-                </section>
-                <section className={styles.scrollSection}>
+                </div>
+                <div className={styles.scrollSection} style={{ backgroundColor: '#f4f4f4de' }}>
                     <ChoicePhone />
-                </section>
-                <section className={styles.scrollSection}>
+                </div>
+                <div className={styles.scrollSection} style={{ backgroundColor: '#f4f4f4de' }}>
                     <SelectPhone />
-                </section>
-                <section className={styles.scrollSection}>
+                </div>
+                <div className={styles.scrollSection} style={{ backgroundColor: '#f4f4f4de' }}>
                     <ActivityMap />
-                </section>
+                </div>
             </div>
         </div>
     );

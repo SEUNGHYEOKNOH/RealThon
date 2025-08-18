@@ -39,7 +39,6 @@ secManual : 16 ~1/2,000sec
             w="100vw"
             justify="center"
             align="center"
-            bg="#f4f4f4de"
         >
             <Flex
                 w="1200px"

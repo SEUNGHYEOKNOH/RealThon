@@ -155,7 +155,6 @@ export default function ActivityMap() {
             justifyContent="center"
             alignItems="center"
             w="100vw"
-            bg="#f4f4f4de"
         >
             <Flex
                 gap={isMobile ? "20px" : "200px"}

@@ -11,7 +11,6 @@ export default function ChoicePhone() {
             justify="center"
             w="100vw"
             h="100vh"
-            bg="#f4f4f4de"
         >
             <Flex
                 justify="center"
