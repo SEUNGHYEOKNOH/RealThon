@@ -1,26 +1,15 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Flex, Box, Text, Image, Input, Button, List, useBreakpointValue } from '@chakra-ui/react';
-import { useColorModeValue } from '@/components/ui/color-mode';
+import { useColorModeValue } from "@/components/ui/color-mode"
 
 import KoreaMap from './KoreaMap.jsx';
 // GeocodingReverse.jsx에서 함수와 데이터를 모두 가져옵니다.
-import getAreaByLatLngDetailed, { fullAreasData } from '@/components/Misc/GeocodingReverse.jsx';
+import getAreaByLatLngDetailed, { fullAreasData } from '@/components/Misc/GeocodingReverse.jsx'; 
 
 import SearchCircle1 from '@/assets/SearchCircle.svg';
 import SearchCircle2 from '@/assets/SearchCircle2.svg';
-import { useNavigate } from 'react-router-dom';
 
 export default function ActivityMap() {
-    // 2. useNavigate 훅을 실행하여 navigate 함수를 생성합니다.
-    const navigate = useNavigate();
-
-    // 3. 버튼 클릭 시 호출될 함수를 정의합니다.
-    const handleNavigateToAlbum = () => {
-        // '/my-activity-map' 경로로 페이지를 이동시킵니다.
-        // 이 경로는 라우터 설정에 정의된 경로와 일치해야 합니다.
-        navigate('/my-activity-map');
-    };
-
     const [lat, setLat] = useState(null);
     const [lon, setLon] = useState(null);
 
@@ -39,9 +28,9 @@ export default function ActivityMap() {
     // 1. 데이터 정제 (최초 1회만 실행)
     const flattenedAreas = useMemo(() => {
         const flatList = [];
-        fullAreasData.forEach((province) => {
+        fullAreasData.forEach(province => {
             if (province.cities && province.cities.length > 0) {
-                province.cities.forEach((city) => {
+                province.cities.forEach(city => {
                     flatList.push({
                         fullName: `${province.name} ${city.name}`,
                         provinceName: province.name,
@@ -71,19 +60,20 @@ export default function ActivityMap() {
         }
         if (!isInputFocused) setIsInputFocused(true);
 
-        const filteredResults = flattenedAreas.filter((area) => area.fullName.includes(searchTerm));
+        const filteredResults = flattenedAreas.filter(area =>
+            area.fullName.includes(searchTerm)
+        );
         setResults(filteredResults.slice(0, 7));
         setActiveIndex(0);
     }, [searchTerm, flattenedAreas]);
-
+    
     // 컴포넌트 언마운트 시 모든 timeout 정리
     useEffect(() => {
         return () => {
             if (blurTimeoutRef.current) {
                 clearTimeout(blurTimeoutRef.current);
             }
-            if (throttleTimeoutRef.current) {
-                // 쓰로틀링 타이머도 정리
+            if (throttleTimeoutRef.current) { // 쓰로틀링 타이머도 정리
                 clearTimeout(throttleTimeoutRef.current);
             }
         };
@@ -115,12 +105,12 @@ export default function ActivityMap() {
         switch (e.key) {
             case 'ArrowDown':
                 e.preventDefault();
-                setActiveIndex((prev) => (prev + 1) % results.length);
+                setActiveIndex(prev => (prev + 1) % results.length);
                 actionTaken = true;
                 break;
             case 'ArrowUp':
                 e.preventDefault();
-                setActiveIndex((prev) => (prev - 1 + results.length) % results.length);
+                setActiveIndex(prev => (prev - 1 + results.length) % results.length);
                 actionTaken = true;
                 break;
             case 'Enter':
@@ -146,160 +136,146 @@ export default function ActivityMap() {
             }, THROTTLE_DELAY);
         }
     };
-
+    
     const locationName = getAreaByLatLngDetailed(lat, lon);
 
     return (
-        <Box bg="#f4f4f4de" minH="100vh">
-            <Flex justifyContent="center" alignItems="center" h="100vh" w="100vw">
-                <Flex gap="200px" alignItems="center">
-                    <Box>
-                        <KoreaMap setLat={setLat} setLon={setLon} lat={lat} lon={lon} />
-                    </Box>
-                    <Box>
-                        <Text ml="20px" fontSize="20px">
-                            MY LOCATION
-                        </Text>
-                        <Flex justify="center" w="100%" mt="20px">
-                            <Box position="relative" w="243px">
-                                <Image
-                                    src={isLightMode ? SearchCircle2 : SearchCircle1}
+        <Flex
+            justifyContent="center"
+            alignItems="center"
+            w="100vw"
+            bg="#f4f4f4de"
+        >
+            <Flex
+                gap={isMobile ? "20px" : "200px"}
+                alignItems="center"
+
+                direction={isMobile ? "column" : "row"}
+            >
+                <Box>
+                    <KoreaMap
+                        setLat={setLat}
+                        setLon={setLon}
+                        lat={lat}
+                        lon={lon}
+                    />
+                </Box>
+                <Box>
+                    <Text
+                        ml="20px"
+                        fontSize="20px"
+                    >
+                        MY LOCATION
+                    </Text>
+                    <Flex
+                        justify="center"
+                        w="100%"
+                        mt="20px"
+                    >
+                        <Box position="relative" w="243px">
+                            <Image
+                                src={isLightMode ? SearchCircle2 : SearchCircle1}
+                                position="absolute"
+                                alt="Search"
+                                w="15px"
+                                top="10px"
+                                zIndex="2"
+                            />
+        
+                            <Input
+                                w="100%"
+                                border="none"
+                                borderBottom="2px solid #000"
+                                borderRadius="0"
+                                outline="none"
+                                _focus={{ boxShadow: 'none', borderColor: 'blue.500' }}
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onFocus={() => {
+                                    if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
+                                    setIsInputFocused(true);
+                                }}
+                                onBlur={() => {
+                                    blurTimeoutRef.current = setTimeout(() => setIsInputFocused(false), 150);
+                                }}
+                                onKeyDown={handleKeyDown} // onKeyDown 핸들러 연결
+                                placeholder="지역명 검색..."
+                                px="20px"
+                                position="relative"
+                                zIndex="1"
+                            />
+
+                            {isInputFocused && results.length > 0 && !(results.length === 1 && results[0].fullName === searchTerm) && (
+                                <Box
                                     position="absolute"
-                                    alt="Search"
-                                    w="15px"
-                                    top="10px"
-                                    zIndex="2"
-                                />
+                                    top="100%"
+                                    left="0"
+                                    right="0"
+                                    bg={isLightMode ? 'white' : 'gray.700'}
+                                    border="1px solid"
+                                    borderColor={isLightMode ? 'gray.200' : 'gray.600'}
+                                    borderRadius="md"
+                                    mt="2px"
+                                    zIndex="1000"
+                                    boxShadow="lg"
+                                >
+                                    <List.Root spacing={1} p="2">
+                                        {results.map((area, index) => (
+                                            <List.Item
+                                                key={area.fullName}
+                                                p="2"
+                                                cursor="pointer"
+                                                borderRadius="md"
+                                                bg={index === activeIndex ? (isLightMode ? 'gray.100' : 'gray.600') : 'transparent'}
+                                                _hover={{ bg: isLightMode ? 'gray.100' : 'gray.600' }}
+                                                onMouseDown={() => handleResultClick(area)}
+                                            >
+                                                {area.fullName}
+                                            </List.Item>
+                                        ))}
+                                    </List.Root>
+                                </Box>
+                            )}
+                        </Box>
+                    </Flex>
+                    <Text
+                        mt="20px"
+                        maxW="430px"
+                        whiteSpace="pre-wrap"
+                    >
+                        {locationName}
+                        <br /><br />
+                        촬영 레벨 : n단계
+                        <br /><br />
+                        은하수, 별 사진을 찍기에 적합하지 않아요
+                        <br /><br />
+                        ISO: n000~n200 사이 추천<br />
+                        화이트 : n00~ n000<br />
+                        ev : n.0 ~ n.0<br />
+                        <br /><br />
+                        비,  광해 다수
+                    </Text>
 
-                                <Input
-                                    w="100%"
-                                    border="none"
-                                    borderBottom="2px solid #000"
-                                    borderRadius="0"
-                                    outline="none"
-                                    _focus={{ boxShadow: 'none', borderColor: 'blue.500' }}
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    onFocus={() => {
-                                        if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
-                                        setIsInputFocused(true);
-                                    }}
-                                    onBlur={() => {
-                                        blurTimeoutRef.current = setTimeout(() => setIsInputFocused(false), 150);
-                                    }}
-                                    onKeyDown={handleKeyDown} // onKeyDown 핸들러 연결
-                                    placeholder="지역명 검색..."
-                                    px="20px"
-                                    position="relative"
-                                    zIndex="1"
-                                />
-
-                                {isInputFocused &&
-                                    results.length > 0 &&
-                                    !(results.length === 1 && results[0].fullName === searchTerm) && (
-                                        <Box
-                                            position="absolute"
-                                            top="100%"
-                                            left="0"
-                                            right="0"
-                                            bg={isLightMode ? 'white' : 'gray.700'}
-                                            border="1px solid"
-                                            borderColor={isLightMode ? 'gray.200' : 'gray.600'}
-                                            borderRadius="md"
-                                            mt="2px"
-                                            zIndex="1000"
-                                            boxShadow="lg"
-                                        >
-                                            <List.Root spacing={1} p="2">
-                                                {results.map((area, index) => (
-                                                    <List.Item
-                                                        key={area.fullName}
-                                                        p="2"
-                                                        cursor="pointer"
-                                                        borderRadius="md"
-                                                        bg={
-                                                            index === activeIndex
-                                                                ? isLightMode
-                                                                    ? 'gray.100'
-                                                                    : 'gray.600'
-                                                                : 'transparent'
-                                                        }
-                                                        _hover={{ bg: isLightMode ? 'gray.100' : 'gray.600' }}
-                                                        onMouseDown={() => handleResultClick(area)}
-                                                    >
-                                                        {area.fullName}
-                                                    </List.Item>
-                                                ))}
-                                            </List.Root>
-                                        </Box>
-                                    )}
-                            </Box>
-                        </Flex>
-                        <Text mt="20px" maxW="430px" whiteSpace="pre-wrap">
-                            {locationName}
-                            <br />
-                            <br />
-                            촬영 레벨 : n단계
-                            <br />
-                            <br />
-                            은하수, 별 사진을 찍기에 적합하지 않아요
-                            <br />
-                            <br />
-                            ISO: n000~n200 사이 추천
-                            <br />
-                            화이트 : n00~ n000
-                            <br />
-                            ev : n.0 ~ n.0
-                            <br />
-                            <br />
-                            <br />
-                            비, 광해 다수
-                        </Text>
-
-                        <Button
-                            marginRight="10%"
-                            marginLeft="10%"
-                            mt="20px"
-                            w="40%"
-                            h="50px"
-                            bg="#000"
-                            color="#fff"
-                            outline="none"
-                            border="none"
-                            _hover={{
-                                bg: '#333',
-                            }}
-                            _focus={{
-                                outline: 'none',
-                                border: 'none',
-                            }}
-                        >
-                            사진 업로드
-                        </Button>
-
-                        <Button
-                            mt="20px"
-                            w="40%"
-                            h="50px"
-                            bg="#ffffffff"
-                            color="#000000ff"
-                            outline="none"
-                            border="none"
-                            _hover={{
-                                bg: '#e2e8f0',
-                            }}
-                            _focus={{
-                                outline: 'none',
-                                border: 'none',
-                            }}
-                            // 4. 버튼의 onClick 이벤트에 위에서 만든 핸들러 함수를 연결합니다.
-                            onClick={handleNavigateToAlbum}
-                        >
-                            내 앨범 보기
-                        </Button>
-                    </Box>
-                </Flex>
+                    <Button
+                        my="20px"
+                        w="100%"
+                        h="50px"
+                        bg="#000"
+                        color="#fff"
+                        outline="none"
+                        border="none"
+                        _hover={{
+                            bg: "#333"
+                        }}
+                        _focus={{
+                            outline: "none",
+                            border: "none"
+                        }}
+                    >
+                        사진 업로드
+                    </Button>
+                </Box>
             </Flex>
-        </Box>
-    );
+        </Flex>
+    )
 }
