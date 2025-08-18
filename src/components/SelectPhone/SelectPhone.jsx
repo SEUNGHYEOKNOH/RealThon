@@ -32,35 +32,37 @@ secManual : 16 ~1/2,000sec
     };
 
     return (
-        <Flex w="100vw" h="100vh" justify="center" align="center">
-            <Box w="1200px" pr="20px">
-                <Box mx="-50px" float="left">
-                    <Image src={PhoneFrame} alt="Phone Frame" h="503px" />
-                </Box>
-                <Box py="20px">
-                    <Text fontSize="40px">Galaxy S25</Text>
-                    <Text fontSize="20px">BEST SHOT</Text>
+        <Box bg="#f4f4f4" minH="100vh">
+            <Flex w="100vw" h="100vh" justify="center" align="center">
+                <Box w="1200px" pr="20px">
+                    <Box mx="-50px" float="left">
+                        <Image src={PhoneFrame} alt="Phone Frame" h="503px" />
+                    </Box>
+                    <Box py="20px">
+                        <Text fontSize="40px">Galaxy S25</Text>
+                        <Text fontSize="20px">BEST SHOT</Text>
 
-                    <Flex maxW="757px" h="350px" border="1px solid black" overflowY="scroll">
-                        <Box w="50%">
-                            <Text whiteSpace="pre-wrap">{phoneData.data}</Text>
-                        </Box>
-                        <Box w="50%">
-                            <Text whiteSpace="pre-wrap">
-                                은하수 ㅇ내ㅓ
-                                <br />
-                                ㅇdsklnfkldnsl
-                                <br />
-                                fisdfiopsdj
-                                <br />
-                                fpsidjfpiosdj
-                                <br />
-                                sdfpiojpsodfjpo
-                            </Text>
-                        </Box>
-                    </Flex>
+                        <Flex maxW="757px" h="350px" border="1px solid black" overflowY="scroll">
+                            <Box w="50%">
+                                <Text whiteSpace="pre-wrap">{phoneData.data}</Text>
+                            </Box>
+                            <Box w="50%">
+                                <Text whiteSpace="pre-wrap">
+                                    은하수 ㅇ내ㅓ
+                                    <br />
+                                    ㅇdsklnfkldnsl
+                                    <br />
+                                    fisdfiopsdj
+                                    <br />
+                                    fpsidjfpiosdj
+                                    <br />
+                                    sdfpiojpsodfjpo
+                                </Text>
+                            </Box>
+                        </Flex>
+                    </Box>
                 </Box>
-            </Box>
-        </Flex>
+            </Flex>
+        </Box>
     );
 }

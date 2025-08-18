@@ -9,7 +9,6 @@
 
 import React from 'react';
 import styles from './Loading.module.css';
-
 import cloudTop from '../../../assets/cloud-top.png';
 import cloudBottom from '../../../assets/cloud-bottom.png';
 import cloudLeft from '../../../assets/cloud-left.png';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './Sky.module.css';
+import styles from './Sky2.module.css';
 
 // 별자리 데이터(두 그룹, 동일 속도 이동)
 const CONSTELLATIONS = [
@@ -39,7 +39,7 @@ const CONSTELLATIONS = [
     },
 ];
 
-export default function Sky() {
+export default function Sky2() {
     const [hovered, setHovered] = useState(null);
     const [hoveredConst, setHoveredConst] = useState(null);
 

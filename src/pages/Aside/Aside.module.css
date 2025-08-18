@@ -1,120 +1,25 @@
-/* =========================
-   Sky 배경 전체
-   - 화면 전체를 fixed로 덮고 컨텐츠 뒤로 보이게 함
-   ========================= */
-.sky {
-    position: fixed;
-    inset: 0; /* 전체 화면 덮기 */
-    z-index: -1; /* 콘텐츠 뒤 */
+/* //src/pages/Aside/Aside.module.css */
+
+/* 기존 스타일 */
+.page {
+    min-height: 100vh; /* 화면 높이만큼 */
+    height: 200vh;
+    /* 필요 시 고정 높이: height: 120vh; */
+    /* 상하 여백이 필요하면 padding 추가 */
+    box-sizing: border-box;
+    background: linear-gradient(#ffffff00 20%, #ffffff00 20%, #24355200 0%, #f4f4f4 100%);
+}
+
+/* 구름들을 담는 영역: 화면 전체에 포지셔닝 */
+.cloudContainer {
+    position: relative;
+    width: 100%;
+    height: 200vh; /* 필요하면 높이 조정 */
     overflow: hidden;
-    pointer-events: none; /* 배경은 포인터 차단 (별/그룹 요소는 개별적으로 활성화) */
+    background: rgba(255, 255, 255, 0);
 }
 
-/* 하늘 그라디언트 */
-.gradient {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(#0a1526 0%, #122643 45%, #1a2f4f 70%, #243552 100%);
-}
-
-/* =========================
-   별/별자리 (필요시 유지/수정)
-   ========================= */
-
-/* 레이어 컨테이너 */
-.starsLayer,
-.constellationsLayer {
-    position: absolute;
-    inset: 0;
-}
-.constellationsLayer {
-    pointer-events: none;
-} /* 그룹 자체는 배경 취급 */
-
-/* 단일 별: 반짝임 + 미세 드리프트 */
-.star {
-    position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(ellipse at center, #ffd7a8 0%, #ffc670 35%, #ff9b3d 60%, rgba(255, 153, 61, 0) 70%);
-    box-shadow: 0 0 6px 2px rgba(255, 200, 120, 0.7), 0 0 16px 6px rgba(255, 160, 70, 0.25);
-    filter: saturate(1.1);
-    transform: translate(-50%, -50%);
-    animation: twinkle 2.6s linear infinite, drift var(--drift-duration, 10s) ease-in-out infinite;
-    pointer-events: auto; /* 별 hover/툴팁 가능 */
-    will-change: transform, opacity, filter;
-}
-
-/* 별 반짝임 */
-@keyframes twinkle {
-    0%,
-    100% {
-        opacity: 0.9;
-        filter: brightness(1);
-    }
-    50% {
-        opacity: 0.45;
-        filter: brightness(1.25);
-    }
-}
-
-/* 별 미세 드리프트(상하 왕복) */
-@keyframes drift {
-    0%,
-    100% {
-        transform: translate(-50%, calc(-50% - var(--drift-amplitude, 6px)));
-    }
-    50% {
-        transform: translate(-50%, calc(-50% + var(--drift-amplitude, 6px)));
-    }
-}
-
-/* 별자리 그룹(수평 이동) */
-.constellation {
-    position: absolute;
-    width: 0;
-    height: 0; /* 기준점만 보유, 내부 별만 보임 */
-    transform: translate(-50%, -50%);
-    animation: constellationMove var(--const-move-duration, 120s) linear infinite;
-    animation-delay: var(--const-move-delay, 0s);
-    pointer-events: auto; /* 그룹 hover 시 별자리 툴팁 표시 */
-}
-
-/* 별자리: 왼쪽 밖 → 오른쪽 밖 */
-@keyframes constellationMove {
-    0% {
-        transform: translate(calc(-50% - 60vw), -50%);
-    }
-    100% {
-        transform: translate(calc(-50% + 60vw), -50%);
-    }
-}
-
-/* 툴팁 공통 */
-.tooltip {
-    position: absolute;
-    transform: translate(-50%, calc(-100% - 12px));
-    background: rgba(12, 18, 32, 0.9);
-    color: #ffdcae;
-    border: 1px solid rgba(255, 206, 150, 0.3);
-    padding: 8px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-    line-height: 1.3;
-    white-space: nowrap;
-    pointer-events: none;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-}
-.constTooltip {
-    max-width: 240px;
-    text-align: left;
-}
-
-/* =========================
-   구름 (무한 루프, 왼쪽 → 오른쪽)
-   - 200vw 폭 + repeat-x
-   - 이동(오른쪽) + 미세 흔들림 동시 적용
-   ========================= */
-
+/* 개별 구름 공통 스타일 */
 /* 공통 구름 베이스 */
 .cloud {
     position: absolute;
@@ -176,9 +81,9 @@
 /* 1: 가장 아래, 크고 느리게 */
 .cloud1 {
     background-image: url('../../assets/cloud1.png');
-    top: 72%; /* 화면 하단 쪽 */
+    top: 0%; /* 화면 하단 쪽 */
     left: -10%; /* 왼쪽 바깥에서 시작 */
-    height: 78vh;
+    height: 88vh;
     opacity: 0.75;
     animation-duration: 110s, 6s; /* 이동 110s, 흔들림 6s */
     animation-delay: 0s, 0.4s; /* 흔들림만 약간 지연 */
@@ -187,9 +92,9 @@
 /* 2: 중간 높이, 보통 속도 */
 .cloud2 {
     background-image: url('../../assets/cloud2.png');
-    top: 58%;
-    left: 0%;
-    height: 70vh;
+    top: 5%;
+    left: -15%;
+    height: 80vh;
     opacity: 0.8;
     animation-duration: 80s, 5s;
     animation-delay: 5s, 0.2s; /* 이동 5초 후 시작 */
@@ -198,9 +103,9 @@
 /* 3: 약간 위, 조금 빠르게 */
 .cloud3 {
     background-image: url('../../assets/cloud3.png');
-    top: 62%;
-    left: -25%;
-    height: 64vh;
+    top: 10%;
+    left: -20%;
+    height: 74vh;
     opacity: 0.6;
     animation-duration: 55s, 4.5s;
     animation-delay: 12s, 0s;
@@ -209,8 +114,8 @@
 /* 4: 매우 가까움(크고 가장 느림) */
 .cloud4 {
     background-image: url('../../assets/cloud4.png');
-    top: 78%;
-    left: -5%;
+    top: 15%;
+    left: -25%;
     height: 82vh;
     opacity: 0.78;
     animation-duration: 140s, 6.5s;
@@ -220,8 +125,8 @@
 /* 5: 낮은 높이, 보통 속도 */
 .cloud5 {
     background-image: url('../../assets/cloud1.png');
-    top: 84%;
-    left: -25%;
+    top: 20%;
+    left: -30%;
     height: 72vh;
     opacity: 0.82;
     animation-duration: 95s, 5.5s;
@@ -231,8 +136,8 @@
 /* 6: 중간 높이, 느림 */
 .cloud6 {
     background-image: url('../../assets/cloud2.png');
-    top: 66%;
-    left: -5%;
+    top: 25%;
+    left: -35%;
     height: 68vh;
     opacity: 0.7;
     animation-duration: 130s, 7s;
@@ -242,8 +147,8 @@
 /* 7: 위쪽, 빠름 */
 .cloud7 {
     background-image: url('../../assets/cloud3.png');
-    top: 60%;
-    left: -8%;
+    top: 30%;
+    left: -40%;
     height: 60vh;
     opacity: 0.62;
     animation-duration: 50s, 4.2s;
@@ -253,8 +158,95 @@
 /* 8: 가장 빠르고 작게 */
 .cloud8 {
     background-image: url('../../assets/cloud4.png');
-    top: 56%;
-    left: -30%;
+    top: 35%;
+    left: -45%;
+    height: 76vh;
+    opacity: 0.6;
+    animation-duration: 40s, 3.8s;
+    animation-delay: 35s, 0.2s;
+}
+
+.cloud19 {
+    background-image: url('../../assets/cloud1.png');
+    top: 38%; /* 화면 하단 쪽 */
+    left: -50%; /* 왼쪽 바깥에서 시작 */
+    height: 78vh;
+    opacity: 0.75;
+    animation-duration: 110s, 6s; /* 이동 110s, 흔들림 6s */
+    animation-delay: 0s, 0.4s; /* 흔들림만 약간 지연 */
+}
+
+/* 2: 중간 높이, 보통 속도 */
+.cloud10 {
+    background-image: url('../../assets/cloud2.png');
+    top: 41%;
+    left: -55%;
+    height: 70vh;
+    opacity: 0.8;
+    animation-duration: 80s, 5s;
+    animation-delay: 5s, 0.2s; /* 이동 5초 후 시작 */
+}
+
+/* 3: 약간 위, 조금 빠르게 */
+.cloud11 {
+    background-image: url('../../assets/cloud3.png');
+    top: 48%;
+    left: -60%;
+    height: 84vh;
+    opacity: 0.6;
+    animation-duration: 55s, 4.5s;
+    animation-delay: 12s, 0s;
+}
+
+/* 4: 매우 가까움(크고 가장 느림) */
+.cloud12 {
+    background-image: url('../../assets/cloud4.png');
+    top: 51%;
+    left: -65%;
+    height: 82vh;
+    opacity: 0.78;
+    animation-duration: 140s, 6.5s;
+    animation-delay: 2s, 0.6s;
+}
+
+/* 5: 낮은 높이, 보통 속도 */
+.cloud13 {
+    background-image: url('../../assets/cloud1.png');
+    top: 52%;
+    left: -70%;
+    height: 100vh;
+    opacity: 0.82;
+    animation-duration: 95s, 5.5s;
+    animation-delay: 8s, 0.3s;
+}
+
+/* 6: 중간 높이, 느림 */
+.cloud14 {
+    background-image: url('../../assets/cloud2.png');
+    top: 59%;
+    left: -75%;
+    height: 68vh;
+    opacity: 0.7;
+    animation-duration: 130s, 7s;
+    animation-delay: 18s, 0.5s;
+}
+
+/* 7: 위쪽, 빠름 */
+.cloud15 {
+    background-image: url('../../assets/cloud3.png');
+    top: 63%;
+    left: -35%;
+    height: 60vh;
+    opacity: 0.62;
+    animation-duration: 50s, 4.2s;
+    animation-delay: 25s, 0.1s;
+}
+
+/* 8: 가장 빠르고 작게 */
+.cloud16 {
+    background-image: url('../../assets/cloud4.png');
+    top: 65%;
+    left: -45%;
     height: 56vh;
     opacity: 0.6;
     animation-duration: 40s, 3.8s;
@@ -265,6 +257,30 @@
    반응형
    ========================= */
 @media (max-width: 768px) {
+    .cloud2 {
+        left: 10%; /* 반복 루프 폭(끊김 방지) */
+        size: 20em;
+    }
+    .cloud3 {
+        left: 15%; /* 반복 루프 폭(끊김 방지) */
+    }
+
+    .cloud5 {
+        left: 15%; /* 반복 루프 폭(끊김 방지) */
+    }
+    .cloud7 {
+        left: 15%; /* 반복 루프 폭(끊김 방지) */
+    }
+    .cloud9 {
+        left: 15%; /* 반복 루프 폭(끊김 방지) */
+    }
+    .cloud11 {
+        left: 35%; /* 반복 루프 폭(끊김 방지) */
+    }
+
+    .cloud15 {
+        left: 15%; /* 반복 루프 폭(끊김 방지) */
+    }
     .tooltip {
         font-size: 11px;
     }

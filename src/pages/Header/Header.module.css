@@ -76,6 +76,5 @@
     transition: background 0.12s, color 0.13s;
 }
 .authButton:hover {
-    background: #304972;
-    color: #ffffff;
+    background: none;
 }
