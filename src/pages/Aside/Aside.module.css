@@ -1,92 +1,81 @@
-/* //src/pages/Aside/Aside.module.css */
+/* src/pages/Aside/Aside.module.css */
 
-/* 기존 스타일 */
+/* 페이지 전체 컨테이너 */
 .page {
-    min-height: 100vh; /* 화면 높이만큼 */
-    height: 200vh;
-    /* 필요 시 고정 높이: height: 120vh; */
-    /* 상하 여백이 필요하면 padding 추가 */
+    width: 100%;
+    height: 200vh; /* 스냅 섹션의 높이에 맞춤 */
     box-sizing: border-box;
-    background: linear-gradient(#ffffff00 20%, #ffffff00 20%, #24355200 0%, #f4f4f4de 100%);
+    /* 배경은 Main 컴포넌트나 Sky 컴포넌트에서 처리하므로 투명하게 설정 */
+    background: transparent;
+    position: relative;
+    overflow: hidden; /* 자식 요소인 구름이 넘쳐도 스크롤바가 생기지 않도록 함 */
 }
 
 /* 구름들을 담는 영역: 화면 전체에 포지셔닝 */
 .cloudContainer {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 200vh; /* 필요하면 높이 조정 */
+    height: 100%;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0);
 }
 
 /* 개별 구름 공통 스타일 */
-/* 공통 구름 베이스 */
 .cloud {
     position: absolute;
     left: 0; /* 이동 기준점 */
-    width: 200vw; /* 반복 루프 폭(끊김 방지) */
-    height: 45vh; /* 기본 높이(개별 클래스에서 재정의) */
+    width: 200vw; /* 배경 반복을 위한 넓은 폭 (끊김 방지) */
     pointer-events: none;
-    background-repeat: repeat-x; /* 가로 반복 */
-    background-size: auto 100%; /* 세로에 맞추고 가로는 원본폭 반복 */
-    opacity: 0.85;
-    filter: blur(0.4px) saturate(1.05);
-    will-change: transform;
-    /* 이동(오른쪽) + 흔들림 동시 애니메이션 */
+    background-repeat: repeat-x; /* 이미지를 가로로 반복 */
+    background-size: auto 100%; /* 세로 높이에 이미지를 맞춤 */
+    will-change: transform; /* 애니메이션 성능 최적화 */
+
+    /* 이동(오른쪽) + 흔들림 동시 애니메이션 적용 */
     animation-name: cloudMoveRight, cloudWobble;
     animation-timing-function: linear, ease-in-out;
     animation-iteration-count: infinite, infinite;
-    /* 각 구름의 duration, delay, top/left는 개별 클래스에서 지정 */
 }
 
-/* 오른쪽(L→R) 흐름: 0 → +100vw */
+/* 오른쪽(L→R) 흐름 애니메이션 */
 @keyframes cloudMoveRight {
-    0% {
+    from {
         transform: translateX(0);
     }
-    100% {
-        transform: translateX(100vw);
+    to {
+        transform: translateX(100vw); /* 자신의 너비(200vw)의 절반만큼 이동하여 반복 효과 */
     }
 }
 
-/* 미세 흔들림: 위아래 + 약간의 스케일 변화
-   - cloudMoveRight도 transform을 사용하므로,
-     X축 보정을 위해 translateX(var(--cx, 0))를 넣어 충돌 방지 */
+/* 미세 흔들림 애니메이션 */
 @keyframes cloudWobble {
-    0% {
-        transform: translateX(var(--cx, 0)) translateY(-2px) scale(1);
+    0%,
+    100% {
+        transform: translateY(-2px) scale(1);
     }
     25% {
-        transform: translateX(var(--cx, 0)) translateY(2px) scale(1.01);
+        transform: translateY(2px) scale(1.01);
     }
     50% {
-        transform: translateX(var(--cx, 0)) translateY(-3px) scale(0.995);
+        transform: translateY(-3px) scale(0.995);
     }
     75% {
-        transform: translateX(var(--cx, 0)) translateY(3px) scale(1.008);
-    }
-    100% {
-        transform: translateX(var(--cx, 0)) translateY(-2px) scale(1);
+        transform: translateY(3px) scale(1.008);
     }
 }
 
-/* 개별 구름 설정
-   - background-image: 각 PNG
-   - top/left: 시작 위치
-   - height/opacity: 원근감 표현
-   - animation-duration: 이동 속도(첫 번째), 흔들림 속도(두 번째)
-   - animation-delay: 이동 지연(첫 번째), 흔들림 지연(두 번째)
-*/
+/* --- 개별 구름 설정 --- */
+/* 각 클래스에서 이미지, 위치, 크기, 속도, 지연 등을 개별적으로 정의 */
 
 /* 1: 가장 아래, 크고 느리게 */
 .cloud1 {
     background-image: url('../../assets/cloud1.png');
-    top: 0%; /* 화면 하단 쪽 */
-    left: -10%; /* 왼쪽 바깥에서 시작 */
+    top: 0%;
+    left: -10%;
     height: 88vh;
     opacity: 0.75;
     animation-duration: 110s, 6s; /* 이동 110s, 흔들림 6s */
-    animation-delay: 0s, 0.4s; /* 흔들림만 약간 지연 */
+    animation-delay: 0s, 0.4s;
 }
 
 /* 2: 중간 높이, 보통 속도 */
@@ -97,10 +86,9 @@
     height: 80vh;
     opacity: 0.8;
     animation-duration: 80s, 5s;
-    animation-delay: 5s, 0.2s; /* 이동 5초 후 시작 */
+    animation-delay: 5s, 0.2s;
 }
 
-/* 3: 약간 위, 조금 빠르게 */
 .cloud3 {
     background-image: url('../../assets/cloud3.png');
     top: 10%;
@@ -111,7 +99,6 @@
     animation-delay: 12s, 0s;
 }
 
-/* 4: 매우 가까움(크고 가장 느림) */
 .cloud4 {
     background-image: url('../../assets/cloud4.png');
     top: 15%;
@@ -122,7 +109,6 @@
     animation-delay: 2s, 0.6s;
 }
 
-/* 5: 낮은 높이, 보통 속도 */
 .cloud5 {
     background-image: url('../../assets/cloud1.png');
     top: 20%;
@@ -133,7 +119,6 @@
     animation-delay: 8s, 0.3s;
 }
 
-/* 6: 중간 높이, 느림 */
 .cloud6 {
     background-image: url('../../assets/cloud2.png');
     top: 25%;
@@ -144,7 +129,6 @@
     animation-delay: 18s, 0.5s;
 }
 
-/* 7: 위쪽, 빠름 */
 .cloud7 {
     background-image: url('../../assets/cloud3.png');
     top: 30%;
@@ -155,7 +139,6 @@
     animation-delay: 25s, 0.1s;
 }
 
-/* 8: 가장 빠르고 작게 */
 .cloud8 {
     background-image: url('../../assets/cloud4.png');
     top: 35%;
@@ -166,17 +149,17 @@
     animation-delay: 35s, 0.2s;
 }
 
-.cloud19 {
+/* 9: (오타 수정: cloud19 -> cloud9) */
+.cloud9 {
     background-image: url('../../assets/cloud1.png');
-    top: 38%; /* 화면 하단 쪽 */
-    left: -50%; /* 왼쪽 바깥에서 시작 */
+    top: 38%;
+    left: -50%;
     height: 78vh;
     opacity: 0.75;
-    animation-duration: 110s, 6s; /* 이동 110s, 흔들림 6s */
-    animation-delay: 0s, 0.4s; /* 흔들림만 약간 지연 */
+    animation-duration: 110s, 6s;
+    animation-delay: 0s, 0.4s;
 }
 
-/* 2: 중간 높이, 보통 속도 */
 .cloud10 {
     background-image: url('../../assets/cloud2.png');
     top: 41%;
@@ -184,10 +167,9 @@
     height: 70vh;
     opacity: 0.8;
     animation-duration: 80s, 5s;
-    animation-delay: 5s, 0.2s; /* 이동 5초 후 시작 */
+    animation-delay: 5s, 0.2s;
 }
 
-/* 3: 약간 위, 조금 빠르게 */
 .cloud11 {
     background-image: url('../../assets/cloud3.png');
     top: 48%;
@@ -198,7 +180,6 @@
     animation-delay: 12s, 0s;
 }
 
-/* 4: 매우 가까움(크고 가장 느림) */
 .cloud12 {
     background-image: url('../../assets/cloud4.png');
     top: 51%;
@@ -209,7 +190,6 @@
     animation-delay: 2s, 0.6s;
 }
 
-/* 5: 낮은 높이, 보통 속도 */
 .cloud13 {
     background-image: url('../../assets/cloud1.png');
     top: 52%;
@@ -220,7 +200,6 @@
     animation-delay: 8s, 0.3s;
 }
 
-/* 6: 중간 높이, 느림 */
 .cloud14 {
     background-image: url('../../assets/cloud2.png');
     top: 59%;
@@ -231,7 +210,6 @@
     animation-delay: 18s, 0.5s;
 }
 
-/* 7: 위쪽, 빠름 */
 .cloud15 {
     background-image: url('../../assets/cloud3.png');
     top: 63%;
@@ -242,7 +220,6 @@
     animation-delay: 25s, 0.1s;
 }
 
-/* 8: 가장 빠르고 작게 */
 .cloud16 {
     background-image: url('../../assets/cloud4.png');
     top: 65%;
@@ -257,34 +234,19 @@
    반응형
    ========================= */
 @media (max-width: 768px) {
-    .cloud2 {
-        left: 10%; /* 반복 루프 폭(끊김 방지) */
-        size: 20em;
+    .cloud {
+        height: 38vh; /* 모바일에서 구름 높이 일괄 축소 */
     }
-    .cloud3 {
-        left: 15%; /* 반복 루프 폭(끊김 방지) */
-    }
-
-    .cloud5 {
-        left: 15%; /* 반복 루프 폭(끊김 방지) */
-    }
-    .cloud7 {
-        left: 15%; /* 반복 루프 폭(끊김 방지) */
-    }
-    .cloud9 {
-        left: 15%; /* 반복 루프 폭(끊김 방지) */
+    /* 모바일에서 특정 구름 위치 조정 */
+    .cloud2,
+    .cloud3,
+    .cloud5,
+    .cloud7,
+    .cloud9,
+    .cloud15 {
+        left: 15%;
     }
     .cloud11 {
-        left: 35%; /* 반복 루프 폭(끊김 방지) */
+        left: 35%;
     }
-
-    .cloud15 {
-        left: 15%; /* 반복 루프 폭(끊김 방지) */
-    }
-    .tooltip {
-        font-size: 11px;
-    }
-    .cloud {
-        height: 38vh;
-    } /* 모바일에서 높이 축소 */
 }

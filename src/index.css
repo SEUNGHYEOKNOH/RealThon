@@ -5,6 +5,15 @@
 
 /* 1) 로컬 폰트 등록 */
 /* 레이아웃 기본값 */
+/* Main.module.css 또는 전역 CSS 파일에 추가 */
+.scrollContainer {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+
+    /* 스크롤 이동을 부드럽게 만듭니다. */
+    scroll-behavior: smooth;
+}
 
 @font-face {
     font-family: 'JuliusSans';

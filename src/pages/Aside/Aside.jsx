@@ -12,14 +12,6 @@ import cloud5 from '../../assets/cloud1.png';
 import cloud6 from '../../assets/cloud2.png';
 import cloud7 from '../../assets/cloud3.png';
 import cloud8 from '../../assets/cloud4.png';
-import cloud9 from '../../assets/cloud4.png';
-import cloud10 from '../../assets/cloud1.png';
-import cloud11 from '../../assets/cloud2.png';
-import cloud12 from '../../assets/cloud3.png';
-import cloud13 from '../../assets/cloud4.png';
-import cloud14 from '../../assets/cloud1.png';
-import cloud15 from '../../assets/cloud2.png';
-import cloud16 from '../../assets/cloud3.png';
 
 function Aside() {
     const clouds = [cloud1, cloud2, cloud3, cloud4, cloud5, cloud6, cloud7, cloud8];

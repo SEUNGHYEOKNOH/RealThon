@@ -2,21 +2,30 @@
 
 /*------------------------*/
 
+/* 스크롤의 기준이 되는 부모 컨테이너 */
 .mainWrapper {
     position: relative;
     height: 100vh; /* 스크롤 기준을 자신으로 */
     overflow-y: auto; /* 자신 내부에서 스크롤 발생 */
-
     background: transparent;
 
     /* 스크롤바 숨기기 */
     -ms-overflow-style: none; /* IE/Edge 구형 */
     scrollbar-width: none; /* Firefox */
+
+    /* --- 스크롤 스냅 기능 추가 --- */
+    /* 세로(y) 방향으로 스크롤 스냅을 적용합니다. ('mandatory'는 스크롤이 멈추면 무조건 스냅 지점으로 이동) */
+    scroll-snap-type: y mandatory;
+    /* 스크롤 이동을 부드럽게 만듭니다. (속도 조절 효과) */
+    scroll-behavior: smooth;
 }
+
+/* Chrome, Safari, Opera에서 스크롤바 숨기기 */
 .mainWrapper::-webkit-scrollbar {
     display: none;
 }
 
+/* 기존 Hero 섹션 (첫 번째 스냅 대상) */
 .sectionHero {
     height: 100vh;
     display: grid;
@@ -25,6 +34,22 @@
     font-size: 32px;
     letter-spacing: 0.08em;
     text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+
+    /* --- 스크롤 스냅 정렬 위치 추가 --- */
+    /* 섹션의 시작(상단) 부분을 컨테이너의 시작 부분에 맞춥니다. */
+    scroll-snap-align: start;
 }
 
-/* 오타 수정: main.secstion -> styles.sectionHero 사용 */
+/* Aside, ChoicePhone 등 나머지 컴포넌트를 감싸는 섹션 (두 번째 이후 스냅 대상) */
+.scrollSection {
+    height: 100vh;
+    width: 100%;
+
+    /* --- 스크롤 스냅 정렬 위치 --- */
+    scroll-snap-align: start;
+
+    /* 내부 콘텐츠를 보기 좋게 중앙 정렬 (선택 사항) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

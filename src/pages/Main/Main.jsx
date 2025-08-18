@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from '../Header/Header';
-import Loading from '@/components/ui/Loading/Loading';
 import styles from './Main.module.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,58 +10,41 @@ import ActivityMap from '@/components/ActivityMap/ActivityMap';
 import Sky from '../Sky/Sky';
 
 export default function Main() {
-    const [percent, setPercent] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
-
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
 
     const handleSignIn = () => {
-        navigate('/login'); // '/login' 경로로 페이지를 이동시킵니다.
+        navigate('/login');
     };
 
     const handleLogout = () => {
         setIsLoggedIn(false);
-        // 로그아웃 API 호출 등 추가 로직 구현
     };
-    /*useEffect(() => {
-        if (!isLoading) return;
-        if (percent === 0) {
-            const wait = setTimeout(() => setPercent(1), 900);
-            return () => clearTimeout(wait);
-        }
-
-        if (percent > 0 && percent < 55) {
-            const interval = setInterval(() => setPercent((p) => Math.min(p + 1, 90)), 120);
-            return () => clearInterval(interval);
-        }
-        if (percent >= 55 && percent < 85) {
-            const interval = setInterval(() => setPercent((p) => Math.min(p + 1, 90)), 90);
-            return () => clearInterval(interval);
-        }
-        if (percent >= 85 && percent < 100) {
-            const interval = setInterval(() => setPercent((p) => Math.min(p + 1, 100)), 170);
-            return () => clearInterval(interval);
-        }
-        if (percent === 100) {
-            const timeout = setTimeout(() => setIsLoading(false), 550);
-            return () => clearTimeout(timeout);
-        }
-    }, [percent, isLoading]);
-
-    if (isLoading) return <Loading percent={percent} />; */
 
     return (
         <div className={styles.mainWrapper}>
-            {/* 하늘/별/구름 전체를 배경으로 깔기 */}
             <Sky />
-
             <Header isLoggedIn={isLoggedIn} onSignIn={handleSignIn} onLogout={handleLogout} />
-            <div className={styles.sectionHero}></div>
-            <Aside />
-            <ChoicePhone />
-            <SelectPhone />
-            <ActivityMap />
+
+            {/* 스크롤 스냅을 적용할 부모 컨테이너 */}
+            <div className={styles.scrollContainer}>
+                {/* 각 스크롤 대상이 될 섹션 */}
+                <section className={styles.scrollSection}>
+                    <div className={styles.sectionHero}></div>
+                </section>
+                <section className={styles.scrollSection}>
+                    <Aside />
+                </section>
+                <section className={styles.scrollSection}>
+                    <ChoicePhone />
+                </section>
+                <section className={styles.scrollSection}>
+                    <SelectPhone />
+                </section>
+                <section className={styles.scrollSection}>
+                    <ActivityMap />
+                </section>
+            </div>
         </div>
     );
 }
