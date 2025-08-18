@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../Header/Header';
-import Loading from '../../components/ui/Loading/Loading';
+// import Loading from '@/components/ui/Loading/Loading';
 import styles from './Main.module.css';
 
 import Aside from '../Aside/Aside';

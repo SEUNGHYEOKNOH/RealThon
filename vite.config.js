@@ -18,7 +18,7 @@ export default defineConfig({
     port: 10101,
     hmr: {
       port: 10101,
-      host: 'localhost'
+      host: 'realthon.ajb.kr'
     }
   }
 })
