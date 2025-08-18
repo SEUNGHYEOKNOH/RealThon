@@ -16,8 +16,7 @@ import Main from './pages/Main/Main.jsx';
 
 // import OtherPage from './pages/OtherPage.jsx';  // 주석처리 하세요! 파일이 없으면
 import ActivityMap from './components/ActivityMap/ActivityMap.jsx'; // for test
-import Login from './pages/Login/Login.jsx'; // for test
-import Signup from './pages/Signup/Signup.jsx'; // for test
+import Login from './pages/Signin/Signin.jsx'; // for test
 import MyActivityMap from './components/MyActivityMap/MyActivityMap.jsx'; // for test
 import ChoicePhone from './components/ChoicePhone/ChoicePhone';
 import SelectPhone from './components/SelectPhone/SelectPhone.jsx'; // for test
@@ -45,8 +44,7 @@ createRoot(document.getElementById('root')).render(
                         <Route path="/activitymap" element={<ActivityMap />} />
                         <Route path="/choicephone" element={<ChoicePhone />} />
                         <Route path="/selectphone" element={<SelectPhone />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/signup" element={<Signup />} />
+                        <Route path="/signin" element={<Login />} />
                         <Route path="/myactivitymap" element={<MyActivityMap />} />
                         
                     </Routes>
