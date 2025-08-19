@@ -6,7 +6,13 @@ import SamsungS20Image from '@/assets/phone/S20.png';
 import GPixel8ProImage from '@/assets/phone/G8WB.png';
 import GPixel8ProClayImage from '@/assets/phone/G8W.png';
 
+import PhoneFrame from '@/assets/PhoneFrame.png';
+
 export default function GetPhoneImg({ phoneModel }) {
+    if (!phoneModel || phoneModel === undefined) {
+        console.log(phoneModel)
+        return PhoneFrame; // 기본 프레임 이미지 반환
+    }
     let phoneModelSplit = phoneModel.split(" ");
     if (phoneModelSplit[0] === 'iPhone') {
         if (parseInt(phoneModelSplit[1] >= 14)) {

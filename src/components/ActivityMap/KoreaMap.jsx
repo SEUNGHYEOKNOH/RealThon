@@ -88,7 +88,7 @@ export default function KoreaMap({ setLat, setLon, lat, lon }) {
                 alt="대한민국 지도"
                 cursor="crosshair"
                 onClick={handleMapClick}
-                width="100%"
+                width="90%"
                 height="auto"
                 display="block"
             />

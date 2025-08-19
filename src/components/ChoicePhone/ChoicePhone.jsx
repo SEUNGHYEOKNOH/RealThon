@@ -7,7 +7,7 @@ import GetPhoneImg from "@/utils/GetPhoneImg.jsx";
 
 import SearchCircle from '@/assets/SearchCircle.svg';
 
-export default function ChoicePhone({ setPhoneModel }) {
+export default function ChoicePhone({ setPhoneModel, setPhoneId }) {
     const [deviceList, setDeviceList] = useState([]);
     // 1. 검색어를 저장하기 위한 state 추가
     const [searchTerm, setSearchTerm] = useState('');
@@ -57,6 +57,8 @@ export default function ChoicePhone({ setPhoneModel }) {
                         phoneModelName={phone.model}
                         imageSrc={GetPhoneImg({ phoneModel: phone.model })}
                         setPhoneModel={setPhoneModel}
+                        phoneId={phone.id}
+                        setPhoneId={setPhoneId} // setPhoneId를 Phone 컴포넌트에 전달
                     />
                 ))}
             </Box>

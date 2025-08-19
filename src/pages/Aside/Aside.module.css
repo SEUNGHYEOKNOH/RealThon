@@ -9,16 +9,19 @@
     background: transparent;
     position: relative;
     overflow: hidden; /* 자식 요소인 구름이 넘쳐도 스크롤바가 생기지 않도록 함 */
+    
 }
 
 /* 구름들을 담는 영역: 화면 전체에 포지셔닝 */
 .cloudContainer {
     position: absolute;
-    top: 0;
+    top: 10%;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 75%;
     overflow: hidden;
+        background: none;
+   
 }
 
 /* 개별 구름 공통 스타일 */
@@ -172,7 +175,7 @@
 
 .cloud11 {
     background-image: url('../../assets/cloud3.png');
-    top: 48%;
+    top: 45%;
     left: -60%;
     height: 84vh;
     opacity: 0.6;
@@ -182,7 +185,7 @@
 
 .cloud12 {
     background-image: url('../../assets/cloud4.png');
-    top: 51%;
+    top: 41%;
     left: -65%;
     height: 82vh;
     opacity: 0.78;
@@ -192,8 +195,8 @@
 
 .cloud13 {
     background-image: url('../../assets/cloud1.png');
-    top: 52%;
-    left: -70%;
+    top: 40%;
+    left: -20%;
     height: 100vh;
     opacity: 0.82;
     animation-duration: 95s, 5.5s;
@@ -202,7 +205,7 @@
 
 .cloud14 {
     background-image: url('../../assets/cloud2.png');
-    top: 59%;
+    top: 41%;
     left: -75%;
     height: 68vh;
     opacity: 0.7;
@@ -212,8 +215,8 @@
 
 .cloud15 {
     background-image: url('../../assets/cloud3.png');
-    top: 63%;
-    left: -35%;
+    top: 62%;
+    left: -55%;
     height: 60vh;
     opacity: 0.62;
     animation-duration: 50s, 4.2s;
@@ -222,7 +225,7 @@
 
 .cloud16 {
     background-image: url('../../assets/cloud4.png');
-    top: 65%;
+    top: 42%;
     left: -45%;
     height: 56vh;
     opacity: 0.6;

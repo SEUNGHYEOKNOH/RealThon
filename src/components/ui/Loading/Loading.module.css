@@ -247,3 +247,24 @@
     margin-top: 0;
     width: 97%;
 }
+@media (max-width: 768px) {
+    .centerContent h1 {
+        font-size: 60px;     /* 약 0.7배 */
+    }
+    .centerContent p {
+        font-size: 17px;     /* 약 0.7배 */
+    }
+    .progressSection {
+        width: 56vw;         /* 기존대비 0.7배 */
+    }
+    .progressBar {
+        width: 46vw;         /* 기존대비 0.7배 */
+        height: 4px;
+    }
+    .percentText {
+        font-size: 0.85rem;  /* 약 0.7배 */
+    }
+    .centerContent {
+        width: 56vw;         /* 기존대비 0.7배 */
+    }
+}

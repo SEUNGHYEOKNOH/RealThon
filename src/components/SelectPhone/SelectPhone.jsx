@@ -1,40 +1,56 @@
+import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Box, Flex, Image, Text, useBreakpointValue } from '@chakra-ui/react';
 
 import GetPhoneImg from "@/utils/GetPhoneImg.jsx"
+import { getCameraSetting } from "@/utils/Api.jsx";
 
-import PhoneFrame from '@/assets/PhoneFrame.png';
-
-export default function SelectPhone({ PhoneModel }) {
+export default function SelectPhone({ PhoneModel, phoneId }) {
     const isMobile = useBreakpointValue({ base: true, md: false });
 
+    const [phoneImage, setPhoneImage] = useState(GetPhoneImg(""));
 
-    const phoneData = {
-        name: 'Galaxy S25',
-        model: 'BEST SHOT',
-        data: `줌
-광학줌 21배
-광학줌 21배
-초점거리
-f = 4.1~86.1 mm
+    useEffect(() => {
+        if (PhoneModel !== undefined && PhoneModel) {
+            console.log("PhoneModel:", PhoneModel);
+            setPhoneImage(GetPhoneImg(PhoneModel));
+        }
+    }, [PhoneModel]);
 
-(35 mm filmequivalent : 23 ~ 483 mm)
-4.5-45.0 mm
 
-(35 mm 카메라 환산 25-250 mm 상당의 촬영 화각)
-손떨림 보정
-OIS (광학식 손떨림 보정)
-렌즈 시프트 방식과 전자식 병용(정지화상)
-렌지 시프트 방식(동영상)
-F No
-2.8(W) ~ 5.9 (T)
-f/3.5-5.8
-셔터 스피드
-Auto : 1/8 ~1/2,000
-secManual : 16 ~1/2,000sec
-1/2000 ~ 1초
-1/4000초 (고속연사시 최고 속도),
-4초 (장면 모드의 [불꽃놀이])`,
-    };
+    // 이거 참고해서 작성하면 될 듯
+    const [phoneModel, setPhoneModel] = useState("");
+    const [apertureF, setApertureF] = useState(""); // 조리개값
+    const [exposureS, setExposureS] = useState(""); // 노출시간
+    const [exposureB, setExposureB] = useState(""); // 장노출시간
+    const [iso, setIso] = useState(""); // ISO
+    const [whiteBalance, setWhiteBalance] = useState(""); // 화이트밸런스
+    const [focalMm, setFocalMm] = useState(""); // 초점거리
+    const [notes, setNotes] = useState(""); // 2x(망원) 추천 등등
+
+    const { data: phoneData, refetch: refetchPhoneData } = useQuery({
+        queryKey: ['getphonedata', phoneId],
+        queryFn: () => getCameraSetting(phoneId),
+        enabled: true
+    });
+    useEffect(() => {
+        if (PhoneModel && phoneId) {
+            refetchPhoneData();
+        }
+    }, [PhoneModel, phoneId]);
+    useEffect(() => {
+        if (phoneData) {
+            console.log("phoneData:", phoneData);
+            setPhoneModel(phoneData.model);
+            setApertureF(phoneData.apertureF);
+            setExposureS(phoneData.exposureS);
+            setExposureB(phoneData.exposureB);
+            setIso(phoneData.iso);
+            setWhiteBalance(phoneData.whiteBalance);
+            setFocalMm(phoneData.focalMm);
+            setNotes(phoneData.notes);
+        }
+    }, [phoneData]);
 
     return (
         <Flex
@@ -53,7 +69,7 @@ secManual : 16 ~1/2,000sec
                     float="left"
                 >
                     <Image
-                        src={PhoneFrame}
+                        src={phoneImage}
                         alt="Phone Frame"
                         h={isMobile ? "200px" : "503px"}
                     />
@@ -64,7 +80,6 @@ secManual : 16 ~1/2,000sec
                 >
                     <Text fontSize="40px">{PhoneModel}</Text>
                     <Text fontSize="20px">BEST SHOT</Text>
-
                     <Flex
                         h="350px"
                         border="1px solid black"
@@ -72,42 +87,11 @@ secManual : 16 ~1/2,000sec
                     >
                         <Box>
                             <Text whiteSpace="pre-wrap">
-                                줌<br />
-                                광학줌 21배<br />
-                                광학줌 21배<br />
-                                초점거리<br />
-                                f = 4.1~86.1 mm<br />
-                                <br />
-                                (35 mm filmequivalent : 23 ~ 483 mm)<br />
-                                4.5-45.0 mm<br />
-                                <br />
-                                (35 mm 카메라 환산 25-250 mm 상당의 촬영 화각)<br />
-                                손떨림 보정<br />
-                                OIS (광학식 손떨림 보정)<br />
-                                렌즈 시프트 방식과 전자식 병용(정지화상)<br />
-                                렌지 시프트 방식(동영상)<br />
-                                F No<br />
-                                2.8(W) ~ 5.9 (T)<br />
-                                f/3.5-5.8<br />
-                                셔터 스피드<br />
-                                Auto : 1/8 ~1/2,000<br />
-                                secManual : 16 ~1/2,000sec<br />
-                                1/2000 ~ 1초<br />
-                                1/4000초 (고속연사시 최고 속도),<br />
-                                4초 (장면 모드의 [불꽃놀이])<br />
+                                설명<br />
                             </Text>
                         </Box>
                         <Box>
                             <Text whiteSpace="pre-wrap">
-                                은하수 ㅇ내ㅓ
-                                <br />
-                                ㅇdsklnfkldnsl
-                                <br />
-                                fisdfiopsdj
-                                <br />
-                                fpsidjfpiosdj
-                                <br />
-                                sdfpiojpsodfjpo
                             </Text>
                         </Box>
                     </Flex>

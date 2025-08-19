@@ -23,10 +23,18 @@ export const getPhotos = async (sido) => {
     return response.data;
 };
 
-
-
-
 export const getDeviceList = async () => {
     const response = await axios.get(`/api/cameras/models`);
+    return response.data;
+};
+
+
+export const getCameraSetting = async (model_id) => {
+    const response = await axios.get(`/api/cameras/models/${model_id}`);
+    return response.data;
+};
+
+export const getAccountData = async () => {
+    const response = await axios.get(`/api/my`);
     return response.data;
 };

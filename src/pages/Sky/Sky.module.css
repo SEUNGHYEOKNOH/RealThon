@@ -2,129 +2,120 @@
    Sky 배경 전체
    ========================= */
 .sky {
-    position: fixed;
+    position: absolute;
     inset: 0;
-    z-index: -1;
     overflow: hidden;
+  
     pointer-events: none;
 }
 
 .gradient {
     position: absolute;
     inset: 0;
-    background: linear-gradient(#0a1526 0%, #122643 45%, #1a2f4f 70%, #243552 100%);
+    background: linear-gradient(#000000 10%, #10284b 35%, #1a2f4f 70%, #000000 100%);
 }
 
 /* =========================
    별 및 별자리
    ========================= */
-
 .constellationsLayer {
     position: absolute;
+    z-index: 10;
     inset: 0;
-    pointer-events: none;
+
 }
 
-/* 단일 별: 반짝임 애니메이션만 적용 */
 .star {
     position: absolute;
     border-radius: 50%;
     background: radial-gradient(ellipse at center, #ffd7a8 0%, #ffc670 35%, #ff9b3d 60%, rgba(255, 153, 61, 0) 70%);
-    box-shadow: 0 0 6px 2px rgba(255, 200, 120, 0.7), 0 0 16px 6px rgba(255, 160, 70, 0.25);
-    filter: saturate(1.1);
+    box-shadow: 0 0 6px 2px rgba(255, 200, 120, 0.7);
     transform: translate(-50%, -50%);
-    /* --- ✨ 수정된 부분: drift 애니메이션 제거 --- */
-    animation: twinkle 2.6s linear infinite;
-    pointer-events: auto;
-    will-change: transform, opacity;
+    animation: twinkle 3s linear infinite;
 }
 
-/* 별 반짝임 효과 */
 @keyframes twinkle {
-    0%,
-    100% {
-        opacity: 0.9;
-        filter: brightness(1);
-    }
-    50% {
-        opacity: 0.45;
-        filter: brightness(1.25);
-    }
+    0%, 100% { opacity: 0.9; }
+    50% { opacity: 0.4; }
 }
 
-/* --- ❌ 삭제된 부분: @keyframes drift --- */
-/* 별의 미세한 상하 움직임(표류) 애니메이션을 제거했습니다. */
-
-/* 별자리 그룹 전체의 수평 이동 */
+/* ✨ 개선점 3: 무한 반복 애니메이션 */
 .constellation {
     position: absolute;
-    width: 0;
-    height: 0;
-    transform: translate(-50%, -50%);
-    animation: constellationMove var(--const-move-duration, 120s) linear infinite;
+    width: auto; /* 별들이 뭉칠 수 있도록 너비 자동 조절 */
+    height: auto;
+    /* ✨ 시작 위치를 left: 0으로 통일하고 transform으로 이동 */
+    left: 0;
+    transform: translateX(-100%); /* 화면 왼쪽 밖에서 시작 */
+    animation: constellationMove var(--const-move-duration, 360s) linear infinite;
     animation-delay: var(--const-move-delay, 0s);
+
+    /* ✨ 해결책 3: 별자리 그룹만 마우스 이벤트를 받도록 설정 */
     pointer-events: auto;
+    cursor: pointer;
+    padding: 20px; /* 호버 및 클릭 영역 확보 */
 }
 
-/* 별자리 이동 애니메이션: 왼쪽 화면 밖 -> 오른쪽 화면 밖 */
 @keyframes constellationMove {
     from {
-        transform: translate(calc(-50% - 60vw), -50%);
+        /* 화면 왼쪽 밖(-10vw)에서 시작 */
+        transform: translateX(-10vw);
     }
     to {
-        transform: translate(calc(-50% + 60vw), -50%);
+        /* 화면 오른쪽 밖(110vw)으로 이동 */
+        transform: translateX(110vw);
     }
 }
 
-/* --- [추가했던] 별자리 선(SVG)과 이름 스타일 (유지) --- */
-.constellationSvg {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 800px;
-    height: 800px;
-    pointer-events: none;
-    overflow: visible;
-}
-
-.constellationLine {
-    fill: none;
-    stroke: rgba(255, 255, 255, 0.3);
-    stroke-width: 1px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-.constellationName {
-    position: absolute;
-    left: 50%;
-    top: calc(50% + 80px);
-    transform: translateX(-50%);
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 13px;
-    font-weight: 500;
-    text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
-    white-space: nowrap;
-    pointer-events: none;
-}
-
-/* 툴팁 공통 스타일 (유지) */
+/* 툴팁 스타일 */
 .tooltip {
     position: fixed;
     z-index: 100;
     background: rgba(12, 18, 32, 0.9);
     color: #ffdcae;
     border: 1px solid rgba(255, 206, 150, 0.3);
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    line-height: 1.4;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
     white-space: nowrap;
-    pointer-events: none;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-    transition: opacity 0.2s ease-in-out;
+    pointer-events: none; /* 툴팁 자체는 이벤트 방해하지 않도록 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.2s ease;
 }
+
+/* (구름 관련 CSS는 기존 코드를 그대로 사용하시면 됩니다) */
+
+
+.constTooltip {
+    position: absolute;
+    max-width: 240px;
+    white-space: normal;
+    text-align: left;
+}
+
+/* =========================
+   구름 (기존과 동일)
+   ========================= */
+
+.cloud {
+    position: absolute;
+    left: 0;
+    width: 200vw;
+    height: 45vh;
+    pointer-events: none;
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+    opacity: 0.85;
+    filter: blur(0.4px) saturate(1.05);
+    will-change: transform;
+    animation-name: cloudMoveRight, cloudWobble;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: infinite, infinite;
+}
+
+/* (이하 구름 관련 @keyframes 및 개별 cloud 스타일은 기존 코드와 동일하게 유지) */
+
 
 .constTooltip {
     position: absolute;

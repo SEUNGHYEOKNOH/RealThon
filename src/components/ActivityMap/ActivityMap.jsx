@@ -381,7 +381,7 @@ export default function ActivityMap() {
                                                     <Image
                                                         src={URL.createObjectURL(image)}
                                                         alt="Uploaded Preview"
-                                                        maxH="300px"
+                                                        maxH="250px"
                                                         objectFit="cover"
                                                     />
                                                 </Flex>
@@ -396,7 +396,7 @@ export default function ActivityMap() {
                                             <Textarea
                                                 mt="10px"
                                                 w="100%"
-                                                h="300px"
+                                                h="60px"
                                                 value={description}
                                                 placeholder="사진 설명을 입력하세요"
                                                 onChange={(e) => setDescription(e.target.value)}
