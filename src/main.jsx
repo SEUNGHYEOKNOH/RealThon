@@ -44,7 +44,7 @@ createRoot(document.getElementById('root')).render(
                         <Route path="/activitymap" element={<ActivityMap />} />
                         <Route path="/choicephone" element={<ChoicePhone />} />
                         <Route path="/selectphone" element={<SelectPhone />} />
-                        <Route path="/login" element={<SocialLogin />} />
+                        <Route path="/signin" element={<SocialLogin />} />
                         <Route path="/my-activity-map" element={<MyActivityMap />} />
                     </Routes>
                 </Router>

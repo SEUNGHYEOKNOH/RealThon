@@ -14,12 +14,14 @@ export default function Main() {
     const navigate = useNavigate();
 
     const handleSignIn = () => {
-        navigate('/login');
+        navigate('/signin');
     };
 
     const handleLogout = () => {
         setIsLoggedIn(false);
     };
+
+    const [PhoneModel, setPhoneModel] = useState("");
 
     return (
         <div className={styles.mainWrapper}>
@@ -36,10 +38,14 @@ export default function Main() {
                     <Aside />
                 </div>
                 <div className={styles.scrollSection} style={{ backgroundColor: '#f4f4f4de' }}>
-                    <ChoicePhone />
+                    <ChoicePhone 
+                        setPhoneModel={setPhoneModel}
+                    />
                 </div>
                 <div className={styles.scrollSection} style={{ backgroundColor: '#f4f4f4de' }}>
-                    <SelectPhone />
+                    <SelectPhone
+                        PhoneModel={PhoneModel}
+                    />
                 </div>
                 <div className={styles.scrollSection} style={{ backgroundColor: '#f4f4f4de' }}>
                     <ActivityMap />

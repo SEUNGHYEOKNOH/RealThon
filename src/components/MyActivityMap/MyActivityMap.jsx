@@ -1,10 +1,13 @@
+import { useEffect, useState } from 'react';
 import { Box, Flex, Text, Button, Icon, useBreakpointValue } from '@chakra-ui/react';
 import { LuX } from 'react-icons/lu';
 import { useNavigate } from 'react-router-dom'; // 1. useNavigate 훅을 import 합니다.
+import { useQuery } from '@tanstack/react-query';
 
 import Post from '@/components/MyActivityMap/Post.jsx';
+import { getPhotos } from "@/utils/Api.jsx";;
 
-export default function MyActivityMap({ setIsOnMyActivityMap }) {
+export default function MyActivityMap({ setIsOnMyActivityMap, location }) {
     const isMobile = useBreakpointValue({ base: true, md: false });
     const navigate = useNavigate(); // 2. useNavigate 훅을 실행하여 navigate 함수를 생성합니다.
 
@@ -12,6 +15,28 @@ export default function MyActivityMap({ setIsOnMyActivityMap }) {
     const handleGoBack = () => {
         setIsOnMyActivityMap(false); // MyActivityMap을 닫습니다.
     };
+
+    const [posts, setPosts] = useState([]);
+
+    const { data: photos, refetch: refetchPhotos } = useQuery({
+        queryKey: ['photos', location],
+        queryFn: () => getPhotos(location),
+        enabled: location !== "선택된 지역이 없습니다"
+    });
+
+    useEffect(() => {
+        if (photos) {
+            setPosts(photos);
+            console.log(photos);
+        }
+    }, [photos]);
+
+    useEffect(() => {
+        if (location) {
+            refetchPhotos();
+            console.log("REFETCH PHOTOS", location);
+        }
+    }, [location]);
 
     return (
         <Box
@@ -50,27 +75,10 @@ export default function MyActivityMap({ setIsOnMyActivityMap }) {
                 h="calc(100% - 100px)"
                 overflowY="scroll"
             >
-                <Flex
-                    justifyContent="center"
-                    alignItems="center"
-                    direction={isMobile ? 'column' : 'row'}
-                    mt="30px"
-                    px={isMobile ? '20px' : '200px'}
-                    gap={isMobile ? '' : '80px'}
-                    >
-                    <Box>
-                        <Post />
-                        <Post />
-                        <Post />
-                        <Post />
-                    </Box>
-
-                    <Box>
-                        <Post />
-                        <Post />
-                        <Post />
-                        <Post />
-                    </Box>
+                <Flex>
+                    {posts.map((post, index) => (
+                        <Post key={index} post={post} />
+                    ))}
                 </Flex>
             </Box>
         </Box>

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Flex, Box, Text, Image } from '@chakra-ui/react';
+import { Box, Image, useBreakpointValue } from '@chakra-ui/react';
 
 import KoreaMapImg from '@/assets/KoreaMapImg.png';
 
@@ -19,7 +19,7 @@ export default function KoreaMap({ setLat, setLon, lat, lon }) {
     const lonMin = 125.2;
     const lonMax = 131;
 
-
+    const isMobile = useBreakpointValue({ base: true, md: false });
 
     const handleMapClick = (event) => {
         // 이벤트가 발생한 DOM 요소(이미지)
@@ -75,8 +75,8 @@ export default function KoreaMap({ setLat, setLon, lat, lon }) {
     return (
         <Box
             position="relative"
-            width="100%"
-            maxWidth="800px" // 이미지 최대 너비 설정
+            // width="100%"
+            maxWidth={isMobile ? "180px" : "800px"} // 이미지 최대 너비 설정
             height="auto"
             mx="auto"
             borderRadius="md"

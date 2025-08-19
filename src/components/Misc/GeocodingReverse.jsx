@@ -357,6 +357,11 @@ function getDistance(lat1, lng1, lat2, lng2) {
 function GeocodingReverse(lat, lng) {
     let foundProvince = null;
 
+    // lat lng 둘 다 0 일 경우 선택된 지역이 없습니다 리턴
+    if (lat === 0 && lng === 0) {
+        return "선택된 지역이 없습니다";
+    }
+
     // 1단계: '도' 또는 '광역시' 찾기
     // 1-1. 경계값 기준으로 먼저 검사
     for (const area of fullAreasData) {

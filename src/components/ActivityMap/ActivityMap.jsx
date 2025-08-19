@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Flex, Box, Text, Image, Input, Button, List, useBreakpointValue } from '@chakra-ui/react';
+import { Flex, Box, Text, Image, Input, Textarea, Button, List, useBreakpointValue, Dialog, Portal, CloseButton } from '@chakra-ui/react';
 import { useColorModeValue } from "@/components/ui/color-mode"
 import { useNavigate } from 'react-router-dom';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 
 import KoreaMap from './KoreaMap.jsx';
-// GeocodingReverse.jsx에서 함수와 데이터를 모두 가져옵니다.
 import getAreaByLatLngDetailed, { fullAreasData } from '@/components/Misc/GeocodingReverse.jsx'; 
 import MyActivityMap from '../MyActivityMap/MyActivityMap.jsx';
+import { getStarsVisibility, getLightPollution } from "@/utils/Api.jsx";
 
 import SearchCircle1 from '@/assets/SearchCircle.svg';
 import SearchCircle2 from '@/assets/SearchCircle2.svg';
@@ -14,15 +16,13 @@ import SearchCircle2 from '@/assets/SearchCircle2.svg';
 export default function ActivityMap() {
     const navigate = useNavigate();
 
-    const [isOnMyActivityMap, setIsOnMyActivityMap] = useState(false); // 현재 MyActivityMap이 열려있는지 여부
-
-    // 3. 버튼 클릭 시 호출될 함수를 정의합니다.
+    const [isOnMyActivityMap, setIsOnMyActivityMap] = useState(false);
     const handleNavigateToAlbum = () => {
         setIsOnMyActivityMap(true);
     };
 
-    const [lat, setLat] = useState(null);
-    const [lon, setLon] = useState(null);
+    const [lat, setLat] = useState(0);
+    const [lon, setLon] = useState(0);
 
     const isLightMode = useColorModeValue(true, false);
     const isMobile = useBreakpointValue({ base: true, md: false });
@@ -34,7 +34,7 @@ export default function ActivityMap() {
     const [activeIndex, setActiveIndex] = useState(0);
 
     const blurTimeoutRef = useRef(null);
-    const throttleTimeoutRef = useRef(null); // 키보드 쓰로틀링을 위한 ref 추가
+    const throttleTimeoutRef = useRef(null);
 
     // 1. 데이터 정제 (최초 1회만 실행)
     const flattenedAreas = useMemo(() => {
@@ -77,14 +77,14 @@ export default function ActivityMap() {
         setResults(filteredResults.slice(0, 7));
         setActiveIndex(0);
     }, [searchTerm, flattenedAreas]);
-    
+
     // 컴포넌트 언마운트 시 모든 timeout 정리
     useEffect(() => {
         return () => {
             if (blurTimeoutRef.current) {
                 clearTimeout(blurTimeoutRef.current);
             }
-            if (throttleTimeoutRef.current) { // 쓰로틀링 타이머도 정리
+            if (throttleTimeoutRef.current) {
                 clearTimeout(throttleTimeoutRef.current);
             }
         };
@@ -105,13 +105,12 @@ export default function ActivityMap() {
 
     // 4. 키보드 이벤트 핸들러 (쓰로틀링 적용)
     const handleKeyDown = (e) => {
-        // 결과가 없거나, 쓰로틀링 쿨다운 중이면 아무것도 하지 않음
         if (results.length === 0 || throttleTimeoutRef.current) {
             return;
         }
 
-        const THROTTLE_DELAY = 100; // 100ms 딜레이
-        let actionTaken = false; // 키보드 이벤트가 처리되었는지 여부
+        const THROTTLE_DELAY = 100;
+        let actionTaken = false;
 
         switch (e.key) {
             case 'ArrowDown':
@@ -140,15 +139,94 @@ export default function ActivityMap() {
                 break;
         }
 
-        // 키보드 액션이 있었다면 쓰로틀링 타이머 설정
         if (actionTaken) {
             throttleTimeoutRef.current = setTimeout(() => {
-                throttleTimeoutRef.current = null; // 딜레이 이후 null로 초기화
+                throttleTimeoutRef.current = null;
             }, THROTTLE_DELAY);
         }
     };
     
     const locationName = getAreaByLatLngDetailed(lat, lon);
+
+    const [starsVisibilityGrade, setStarsVisibilityGrade] = useState("보통");
+    const [starsVisibilityScore, setStarsVisibilityScore] = useState(0);
+    // 별 볼 수 있는 확률
+    const { data: starsVisibility } = useQuery({
+        queryKey: ['starsVisibility', lat, lon],
+        queryFn: () => getStarsVisibility(lat, lon),
+        enabled: !!lat && !!lon
+    });
+    useEffect(() => {
+        if (starsVisibility) {
+            setStarsVisibilityGrade(starsVisibility.grade);
+            setStarsVisibilityScore(starsVisibility.score);
+        }
+    }, [starsVisibility]);
+
+    const [lightPollutionScore, setLightPollutionScore] = useState(0);
+    const [lightPollutionText, setLightPollutionText] = useState("알 수 없음");
+    // 광해
+    const { data: lightPollution } = useQuery({
+        queryKey: ['lightPollution', lat, lon],
+        queryFn: () => getLightPollution(lat, lon),
+        enabled: !!lat && !!lon
+    });
+    useEffect(() => {
+        if (lightPollution) {
+            setLightPollutionScore(lightPollution.value);
+            if (lightPollution.value >= 8.0) {
+                setLightPollutionText("매우 높음");
+            } else if (lightPollution.value >= 6.0) {
+                setLightPollutionText("높음");
+            } else if (lightPollution.value >= 4.0) {
+                setLightPollutionText("보통");
+            } else if (lightPollution.value >= 2.0) {
+                setLightPollutionText("낮음");
+            } else {
+                setLightPollutionText("매우 낮음");
+            }
+        }
+    }, [lightPollution]);
+
+    const [image, setImage] = useState(null);
+    const [description, setDescription] = useState("");
+    const handleImageChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            setImage(e.target.files[0]);
+        }
+    };
+
+    // 파일 업로드 mutation 훅
+    const uploadMutation = useMutation({
+        mutationFn: async ({ file, comment }) => {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('comment', comment);
+
+            return axios.post('/api/photos', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+        },
+        onSuccess: () => {
+            alert('사진이 성공적으로 업로드되었습니다!');
+            setImage(null);
+            setDescription('');
+        },
+        onError: (error) => {
+            console.error('사진 업로드 실패:', error);
+            alert('사진 업로드에 실패했습니다. 다시 시도해주세요.');
+        },
+    });
+
+    const handleUpload = () => {
+        if (image) {
+            uploadMutation.mutate({ file: image, comment: description });
+        } else {
+            alert('업로드할 사진을 선택해주세요.');
+        }
+    };
 
     return (
         <Flex
@@ -159,7 +237,6 @@ export default function ActivityMap() {
             <Flex
                 gap={isMobile ? "20px" : "200px"}
                 alignItems="center"
-
                 direction={isMobile ? "column" : "row"}
             >
                 <Box>
@@ -208,7 +285,7 @@ export default function ActivityMap() {
                                 onBlur={() => {
                                     blurTimeoutRef.current = setTimeout(() => setIsInputFocused(false), 150);
                                 }}
-                                onKeyDown={handleKeyDown} // onKeyDown 핸들러 연결
+                                onKeyDown={handleKeyDown}
                                 placeholder="지역명 검색..."
                                 px="20px"
                                 position="relative"
@@ -253,41 +330,98 @@ export default function ActivityMap() {
                         maxW="430px"
                         whiteSpace="pre-wrap"
                     >
-                        {locationName}
-                        <br /><br />
-                        촬영 레벨 : n단계
-                        <br /><br />
-                        은하수, 별 사진을 찍기에 적합하지 않아요
-                        <br /><br />
-                        ISO: n000~n200 사이 추천<br />
-                        화이트 : n00~ n000<br />
-                        ev : n.0 ~ n.0<br />
-                        <br /><br />
-                        비,  광해 다수
+                        {locationName}<br />
+                        촬영 레벨 : {starsVisibilityScore}단계<br />
+                        은하수, 별을 촬영하기에 "{starsVisibilityGrade}"이에요<br />
+                        광해 {lightPollutionText}
                     </Text>
                     
                     <Flex
                         w="100%"
                         gap="20px"
                     >
-                        <Button
-                            my="20px"
-                            h="50px"
-                            bg="#000"
-                            color="#fff"
-                            outline="none"
-                            border="none"
-                            _hover={{
-                                bg: "#333"
-                            }}
-                            _focus={{
-                                outline: "none",
-                                border: "none"
-                            }}
-                            >
-                            사진 업로드
-                        </Button>
+                        <Dialog.Root size="cover" placement="center" motionPreset="slide-in-bottom">
+                            <Dialog.Trigger asChild>
+                                <Button
+                                    my="20px"
+                                    h="50px"
+                                    backgroundColor="#000"
+                                    color="#fff"
+                                    outline="none"
+                                    border="none"
+                                    _hover={{
+                                        backgroundColor: "#333"
+                                    }}
+                                    _focus={{
+                                        outline: "none",
+                                        border: "none"
+                                    }}
+                                    transition="0.3s all easy-in-out"
+                                >
+                                    사진 업로드
+                                </Button>
+                            </Dialog.Trigger>
+                            <Portal>
+                                <Dialog.Backdrop />
+                                <Dialog.Positioner>
+                                    <Dialog.Content>
+                                        <Dialog.Header>
+                                            <Dialog.Title>사진 게시하기</Dialog.Title>
+                                            <Dialog.CloseTrigger asChild>
+                                                <CloseButton size="sm" />
+                                            </Dialog.CloseTrigger>
+                                        </Dialog.Header>
+                                        <Dialog.Body>
+                                            {image && (
+                                                <Flex
+                                                    mt="10px"
+                                                    mb="20px"
+                                                    justify="center"
+                                                >
+                                                    <Image
+                                                        src={URL.createObjectURL(image)}
+                                                        alt="Uploaded Preview"
+                                                        maxH="300px"
+                                                        objectFit="cover"
+                                                    />
+                                                </Flex>
+                                            )}
+                                            <Input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handleImageChange}
+                                                border="none"
+                                            />
 
+                                            <Textarea
+                                                mt="10px"
+                                                w="100%"
+                                                h="300px"
+                                                value={description}
+                                                placeholder="사진 설명을 입력하세요"
+                                                onChange={(e) => setDescription(e.target.value)}
+                                            />
+                                            <Button
+                                                mt="10px"
+                                                w="100%"
+                                                h="50px"
+                                                bg="#4CAF50"
+                                                color="#FFFFFF"
+                                                _hover={{
+                                                    bg: '#45a049',
+                                                }}
+                                                isLoading={uploadMutation.isLoading}
+                                                onClick={handleUpload}
+
+                                            >
+                                                업로드
+                                            </Button>
+                                        </Dialog.Body>
+                                    </Dialog.Content>
+                                </Dialog.Positioner>
+                            </Portal>
+                        </Dialog.Root>
+                        
                         <Button
                             mt="20px"
                             h="50px"
@@ -302,16 +436,18 @@ export default function ActivityMap() {
                                 outline: 'none',
                                 border: 'none',
                             }}
-                            // 4. 버튼의 onClick 이벤트에 위에서 만든 핸들러 함수를 연결합니다.
                             onClick={handleNavigateToAlbum}
-                            >
+                            transition="0.3s all easy-in-out"
+                            // lat lon 0이면 disabled
+                            disabled={lat === 0 && lon === 0}
+                            cursor={lat === 0 && lon === 0 ? 'not-allowed' : 'pointer'}
+                        >
                             내 앨범 보기
                         </Button>
                     </Flex>
                 </Box>
             </Flex>
 
-            {/* 전체화면 오버레이 */}
             <Box
                 position="fixed"
                 top="0"
@@ -319,13 +455,12 @@ export default function ActivityMap() {
                 right="0"
                 bottom="0"
                 zIndex="overlay"
-
                 transition="all 0.3s ease-in-out"
-
                 transform={isOnMyActivityMap ? 'translateY(0)' : 'translateY(100%)'}
             >
                 <MyActivityMap
                     setIsOnMyActivityMap={setIsOnMyActivityMap}
+                    location={locationName}
                 />
             </Box>
         </Flex>

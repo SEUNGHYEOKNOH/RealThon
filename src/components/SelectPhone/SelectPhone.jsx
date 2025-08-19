@@ -1,8 +1,10 @@
 import { Box, Flex, Image, Text, useBreakpointValue } from '@chakra-ui/react';
 
+import GetPhoneImg from "@/utils/GetPhoneImg.jsx"
+
 import PhoneFrame from '@/assets/PhoneFrame.png';
 
-export default function SelectPhone() {
+export default function SelectPhone({ PhoneModel }) {
     const isMobile = useBreakpointValue({ base: true, md: false });
 
 
@@ -60,7 +62,7 @@ secManual : 16 ~1/2,000sec
                     py="20px"
                     w="100%"
                 >
-                    <Text fontSize="40px">Galaxy S25</Text>
+                    <Text fontSize="40px">{PhoneModel}</Text>
                     <Text fontSize="20px">BEST SHOT</Text>
 
                     <Flex
@@ -69,7 +71,31 @@ secManual : 16 ~1/2,000sec
                         overflowY="scroll"
                     >
                         <Box>
-                            <Text whiteSpace="pre-wrap">{phoneData.data}</Text>
+                            <Text whiteSpace="pre-wrap">
+                                줌<br />
+                                광학줌 21배<br />
+                                광학줌 21배<br />
+                                초점거리<br />
+                                f = 4.1~86.1 mm<br />
+                                <br />
+                                (35 mm filmequivalent : 23 ~ 483 mm)<br />
+                                4.5-45.0 mm<br />
+                                <br />
+                                (35 mm 카메라 환산 25-250 mm 상당의 촬영 화각)<br />
+                                손떨림 보정<br />
+                                OIS (광학식 손떨림 보정)<br />
+                                렌즈 시프트 방식과 전자식 병용(정지화상)<br />
+                                렌지 시프트 방식(동영상)<br />
+                                F No<br />
+                                2.8(W) ~ 5.9 (T)<br />
+                                f/3.5-5.8<br />
+                                셔터 스피드<br />
+                                Auto : 1/8 ~1/2,000<br />
+                                secManual : 16 ~1/2,000sec<br />
+                                1/2000 ~ 1초<br />
+                                1/4000초 (고속연사시 최고 속도),<br />
+                                4초 (장면 모드의 [불꽃놀이])<br />
+                            </Text>
                         </Box>
                         <Box>
                             <Text whiteSpace="pre-wrap">

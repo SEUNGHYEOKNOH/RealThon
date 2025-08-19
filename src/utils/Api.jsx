@@ -1,0 +1,32 @@
+import axios from "axios";
+
+export const getStarsVisibility = async (lat, lon) => {
+    const response = await axios.get(`/api/stars/visibility`, {
+        params: { lat, lon }
+    });
+    return response.data;
+};
+
+export const getLightPollution = async (lat, lon) => {
+    const response = await axios.get(`/api/lightpollution`, {
+        params: { lat, lon }
+    });
+    return response.data;
+};
+
+export const getPhotos = async (sido) => {
+    const response = await axios.get(`/api/photos`, {
+        params: { sido },
+        withCredentials: true
+    });
+    console.log(response.data);
+    return response.data;
+};
+
+
+
+
+export const getDeviceList = async () => {
+    const response = await axios.get(`/api/cameras/models`);
+    return response.data;
+};
