@@ -1,11 +1,11 @@
 import { Box, Icon, Image, Flex, Text, useBreakpointValue } from '@chakra-ui/react';
-import { useColorModeValue } from "@/components/ui/color-mode"
+// import { useColorModeValue } from "@/components/ui/color-mode"
 
 
 export default function Post({ post }) {
     // 다크/라이트 모드에 따른 색상 값 설정
-    const postBg = useColorModeValue('#000', 'gray.100');
-    const textColor = useColorModeValue('white', 'black');
+    // const postBg = useColorModeValue('#000', 'gray.100');
+    // const textColor = useColorModeValue('white', 'black');
 
     const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -18,15 +18,14 @@ export default function Post({ post }) {
 
             maxW="800px"
 
-            bg={postBg}
+            bg="#000"
 
             mb={isMobile ? "50px" : "100px"}
         >
-            {/* 적당히 테스트용 이미지 */}
             <Image src={`/images/${post.filename}`} />
 
             <Text
-                color={textColor}
+                color="white"
 
                 mt="15px"
             >

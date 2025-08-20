@@ -9,6 +9,7 @@
     background: transparent;
     position: relative;
     overflow: hidden; /* 자식 요소인 구름이 넘쳐도 스크롤바가 생기지 않도록 함 */
+       
     
 }
 
@@ -20,9 +21,10 @@
     width: 100%;
     height: 75%;
     overflow: hidden;
-        background: none;
-   
+    /* 위에서 70% 지점까지 투명, 70%부터 100%까지 투명에서 #f4f4f4de 색상으로 변하는 그라데이션 */
+    background: linear-gradient(transparent 60%, #f4f4f4 90%, #f4f4f400 100%);
 }
+
 
 /* 개별 구름 공통 스타일 */
 .cloud {
@@ -134,7 +136,7 @@
 
 .cloud7 {
     background-image: url('../../assets/cloud3.png');
-    top: 30%;
+    top: 60%;
     left: -40%;
     height: 60vh;
     opacity: 0.62;
@@ -165,17 +167,17 @@
 
 .cloud10 {
     background-image: url('../../assets/cloud2.png');
-    top: 41%;
-    left: -55%;
+    top: 51%;
+    left: -87%;
     height: 70vh;
-    opacity: 0.8;
+    
     animation-duration: 80s, 5s;
     animation-delay: 5s, 0.2s;
 }
 
 .cloud11 {
     background-image: url('../../assets/cloud3.png');
-    top: 45%;
+    top: 48%;
     left: -60%;
     height: 84vh;
     opacity: 0.6;
@@ -195,10 +197,10 @@
 
 .cloud13 {
     background-image: url('../../assets/cloud1.png');
-    top: 40%;
+    top: 40.5%;
     left: -20%;
     height: 100vh;
-    opacity: 0.82;
+
     animation-duration: 95s, 5.5s;
     animation-delay: 8s, 0.3s;
 }
@@ -208,27 +210,27 @@
     top: 41%;
     left: -75%;
     height: 68vh;
-    opacity: 0.7;
+
     animation-duration: 130s, 7s;
     animation-delay: 18s, 0.5s;
 }
 
 .cloud15 {
     background-image: url('../../assets/cloud3.png');
-    top: 62%;
+    top: 60%;
     left: -55%;
     height: 60vh;
-    opacity: 0.62;
+  
     animation-duration: 50s, 4.2s;
     animation-delay: 25s, 0.1s;
 }
 
 .cloud16 {
     background-image: url('../../assets/cloud4.png');
-    top: 42%;
-    left: -45%;
+    top: 55%;
+    left: -28%;
     height: 56vh;
-    opacity: 0.6;
+ 
     animation-duration: 40s, 3.8s;
     animation-delay: 35s, 0.2s;
 }

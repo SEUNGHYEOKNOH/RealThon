@@ -25,23 +25,23 @@ export default function SocialLogin() {
             w="100vw"
             bgImage={`url(${MyBackgroundImage})`}
             bgSize="cover"
+            
         >
             <Flex
                 direction="column"
                 alignItems="center"
-                bg={formBg}
+                bg="#b7d7eb72"
                 p={12}
                 borderRadius="xl"
                 boxShadow="lg"
-                gap={4}
-                w={{ base: '90%', md: '450px' }}
+                w={{ base: '90%', md: '350px' }}
             >
-                <Heading as="h1" size="lg" mb={6} textAlign="center">
-                    Welcome!
+                <Heading as="h1" size="lg" mb={6} textAlign="left">
+                    MEA<br /> MAPPA CAELESTIS
                 </Heading>
 
-                <Text mb={6} color="gray.500" textAlign="center">
-                    Login with your social media account
+                <Text mb={6} color="white" textAlign="center">
+                    소셜로 로그인 하기
                 </Text>
 
                 <VStack spacing={4} w="100%">
@@ -67,7 +67,7 @@ export default function SocialLogin() {
                     </Button>
 
                     {/* Naver Login Button */}
-                    <Button
+                    {/* <Button
                         w="100%"
                         h="50px"
                         bg="#03C75A" // Naver brand color
@@ -87,13 +87,13 @@ export default function SocialLogin() {
                     >
                         <Icon as={SiNaver} mr={2} w={5} h={5} />
                         네이버로 로그인
-                    </Button>
+                    </Button> */}
 
                     {/* Google Login Button */}
                     <Button
                         w="100%"
                         h="50px"
-                        bg={useColorModeValue('gray.50', 'gray.600')}
+                        bg={useColorModeValue('gray.100', 'gray.600')}
                         color={useColorModeValue('gray.700', 'white')}
                         border="1px"
                         borderColor={useColorModeValue('gray.300', 'gray.500')}

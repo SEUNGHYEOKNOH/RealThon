@@ -31,10 +31,10 @@ export default function SelectPhone({ PhoneModel, phoneId }) {
     const { data: phoneData, refetch: refetchPhoneData } = useQuery({
         queryKey: ['getphonedata', phoneId],
         queryFn: () => getCameraSetting(phoneId),
-        enabled: true
+        enabled: phoneId !== 0 && phoneId !== undefined
     });
     useEffect(() => {
-        if (PhoneModel && phoneId) {
+        if (PhoneModel && phoneId && phoneId !== 0) {
             refetchPhoneData();
         }
     }, [PhoneModel, phoneId]);
@@ -54,12 +54,12 @@ export default function SelectPhone({ PhoneModel, phoneId }) {
 
     return (
         <Flex
-            w="100vw"
+            w="80vw"
             justify="center"
             align="center"
         >
             <Flex
-                w="1200px"
+                w="800px"
                 p="20px"
 
                 direction={isMobile ? "column" : "row"}
@@ -78,23 +78,36 @@ export default function SelectPhone({ PhoneModel, phoneId }) {
                     py="20px"
                     w="100%"
                 >
-                    <Text fontSize="40px">{PhoneModel}</Text>
-                    <Text fontSize="20px">BEST SHOT</Text>
+                    <Text fontSize="40px" marginLeft="20px">{PhoneModel}</Text>
+                    <Text fontSize="20px" marginLeft="20px">BEST SHOT</Text>
                     <Flex
-                        h="350px"
-                        border="1px solid black"
-                        overflowY="scroll"
-                    >
-                        <Box>
-                            <Text whiteSpace="pre-wrap">
-                                설명<br />
+                    w={{ base: 'auto', md: '400px' }} 
+                        h="250px"
+                        background
+                        overflowY="scroll">
+                        <Box
+                        >
+                            <Text whiteSpace="pre-wrap" margin="20px">
+                                "밤하늘을 수놓은 아름다운 별자리<br />
+                                더 이상 전문가의 전유물이 아닙니다!<br />
+                                이제 여러분의 손안에 있는 {PhoneModel}으로도 충분히 <br />
+                                밤하늘의 감동을 담아낼 수 있습니다.
+                                <br />
+                                <br />
+                                {PhoneModel} 모델은 대부분의 은하수촬영이 가능합니다! <br />
+                                감도(iso):{iso}, 조리개 값:{apertureF}, 초점거리:{focalMm}, 노출 시간{exposureS}, 노출 보정:{exposureB} 일때 최적의 은하수 사진을 촬영 할 수 있습니다
+                                <br />
+                                <br />
+                                {PhoneModel} 모델은 대부분의 별자리촬영이 가능합니다! <br />
+                                감도(iso):{iso}, 조리개 값:{apertureF}, 초점거리:{focalMm}, 노출 시간{exposureS}, 노출 보정:{exposureB} 일때 최적의 별자리 사진을 촬영 할 수 있습니다
+                                <br />
+                                <br />
+                               
                             </Text>
                         </Box>
-                        <Box>
-                            <Text whiteSpace="pre-wrap">
-                            </Text>
-                        </Box>
+
                     </Flex>
+
                 </Box>
             </Flex>
         </Flex>

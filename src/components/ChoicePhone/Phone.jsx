@@ -1,7 +1,7 @@
 import { Box, Flex, Text, Image } from '@chakra-ui/react';
 
 // ChoicePhone으로부터 imageSrc와 phoneModelName을 props로 전달받습니다.
-export default function Phone({ imageSrc, phoneModelName, setPhoneModel, phoneId, setPhoneId }) {
+export default function Phone({ imageSrc, phoneModelName, setPhoneModel, phoneId, setPhoneId, goToSection }) {
     return (
         // 가로 스크롤 리스트의 각 아이템이 올바르게 보이도록 스타일을 조정합니다.
         <Flex
@@ -16,6 +16,7 @@ export default function Phone({ imageSrc, phoneModelName, setPhoneModel, phoneId
             onClick={() => {
                 setPhoneModel(phoneModelName);
                 setPhoneId(phoneId);
+                goToSection(3);
             }}
         >
             <Image

@@ -35,6 +35,12 @@ export const getCameraSetting = async (model_id) => {
 };
 
 export const getAccountData = async () => {
-    const response = await axios.get(`/api/my`);
+    const response = await axios.get(`/api/user/me`);
+    return response.data;
+};
+
+
+export const postLogout = async () => {
+    const response = await axios.post(`/api/user/logout`);
     return response.data;
 };

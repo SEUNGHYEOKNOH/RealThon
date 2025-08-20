@@ -13,7 +13,7 @@ import { getStarsVisibility, getLightPollution } from "@/utils/Api.jsx";
 import SearchCircle1 from '@/assets/SearchCircle.svg';
 import SearchCircle2 from '@/assets/SearchCircle2.svg';
 
-export default function ActivityMap() {
+export default function ActivityMap({ isLoggedIn }) {
     const navigate = useNavigate();
 
     const [isOnMyActivityMap, setIsOnMyActivityMap] = useState(false);
@@ -221,6 +221,11 @@ export default function ActivityMap() {
     });
 
     const handleUpload = () => {
+        if (!isLoggedIn) {
+            alert('로그인이 필요합니다.');
+            navigate('/signin');
+            return;
+        }
         if (image) {
             uploadMutation.mutate({ file: image, comment: description });
         } else {
@@ -357,6 +362,9 @@ export default function ActivityMap() {
                                         border: "none"
                                     }}
                                     transition="0.3s all easy-in-out"
+
+                                    disabled={!isLoggedIn}
+                                    cursor={!isLoggedIn ? 'not-allowed' : 'pointer'}
                                 >
                                     사진 업로드
                                 </Button>
@@ -364,7 +372,9 @@ export default function ActivityMap() {
                             <Portal>
                                 <Dialog.Backdrop />
                                 <Dialog.Positioner>
-                                    <Dialog.Content>
+                                    <Dialog.Content
+                                        bg="white"
+                                    >
                                         <Dialog.Header>
                                             <Dialog.Title>사진 게시하기</Dialog.Title>
                                             <Dialog.CloseTrigger asChild>
@@ -439,8 +449,8 @@ export default function ActivityMap() {
                             onClick={handleNavigateToAlbum}
                             transition="0.3s all easy-in-out"
                             // lat lon 0이면 disabled
-                            disabled={lat === 0 && lon === 0}
-                            cursor={lat === 0 && lon === 0 ? 'not-allowed' : 'pointer'}
+                            disabled={(lat === 0 && lon === 0) || !isLoggedIn}
+                            cursor={(lat === 0 && lon === 0) || !isLoggedIn ? 'not-allowed' : 'pointer'}
                         >
                             내 앨범 보기
                         </Button>

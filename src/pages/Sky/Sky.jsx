@@ -38,7 +38,7 @@ const CONSTELLATIONS_DATA = ZODIAC_CONSTELLATIONS.map((constellation, index) => 
 });
 
 // (이하 컴포넌트 코드는 동일)
-export default function Sky() {
+export default function Sky({ currentSectionIndex, isMenuOpen }) {
     const [hoveredConst, setHoveredConst] = useState(null);
 
     const handleConstellationClick = (constellation) => {
@@ -49,34 +49,39 @@ export default function Sky() {
         <div className={styles.sky}>
             <div className={styles.gradient} />
             <div className={styles.constellationsLayer}>
-                {CONSTELLATIONS_DATA.map((group) => (
-                    <div
-                        key={group.id}
-                        className={styles.constellation}
-                        style={{
-                            top: group.startTop,
-                            '--const-move-duration': `${group.moveDuration}s`,
-                            '--const-move-delay': `${group.delay}s`,
-                        }}
-                        onMouseEnter={() => setHoveredConst(group)}
-                        onMouseLeave={() => setHoveredConst(null)}
-                        onClick={() => handleConstellationClick(group)}
-                    >
-                        {group.stars.map((s, idx) => (
+                {
+                    currentSectionIndex === 0 && !isMenuOpen &&
+                        CONSTELLATIONS_DATA.map((group) => (
                             <div
-                                key={`${group.id}-${idx}`}
-                                className={styles.star}
+                                key={group.id}
+                                className={styles.constellation}
                                 style={{
-                                    left: `${s.left}vw`,
-                                    top: `${s.top}vh`,
-                                    width: `${s.size}px`,
-                                    height: `${s.size}px`,
-                                    animationDelay: s.twinkleDelay,
+                                    top: group.startTop,
+                                    '--const-move-duration': `${group.moveDuration}s`,
+                                    '--const-move-delay': `${group.delay}s`,
                                 }}
-                            />
-                        ))}
-                    </div>
-                ))}
+                                onMouseEnter={() => setHoveredConst(group)}
+                                onMouseLeave={() => setHoveredConst(null)}
+                                onClick={() => handleConstellationClick(group)}
+                            >
+                                {
+                                    group.stars.map((s, idx) => (
+                                        <div
+                                            key={`${group.id}-${idx}`}
+                                            className={styles.star}
+                                            style={{
+                                                left: `${s.left}vw`,
+                                                top: `${s.top}vh`,
+                                                width: `${s.size}px`,
+                                                height: `${s.size}px`,
+                                                animationDelay: s.twinkleDelay,
+                                            }}
+                                        />
+                                    ))
+                                }
+                            </div>
+                        ))
+                }
             </div>
 
             {hoveredConst && (

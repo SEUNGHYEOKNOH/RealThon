@@ -27,7 +27,7 @@ export default function MyActivityMap({ setIsOnMyActivityMap, location }) {
     });
 
     useEffect(() => {
-        if (photos && photos.length > 0) {
+        if (photos) {
             setPosts(photos);
             console.log(photos);
         }

@@ -7,7 +7,7 @@ import GetPhoneImg from "@/utils/GetPhoneImg.jsx";
 
 import SearchCircle from '@/assets/SearchCircle.svg';
 
-export default function ChoicePhone({ setPhoneModel, setPhoneId }) {
+export default function ChoicePhone({ setPhoneModel, setPhoneId, goToSection }) {
     const [deviceList, setDeviceList] = useState([]);
     // 1. 검색어를 저장하기 위한 state 추가
     const [searchTerm, setSearchTerm] = useState('');
@@ -29,7 +29,7 @@ export default function ChoicePhone({ setPhoneModel, setPhoneId }) {
     return (
         <Flex direction="column" justify="center" w="100vw" h="100vh">
             <Flex justify="center" w="100%">
-                <Text fontSize="30px">SELECT DEVICE</Text>
+                <Text fontSize="30px" marginTop="50px">SELECT DEVICE</Text>
             </Flex>
             <Flex justify="center" w="100%" mt="40px">
                 <Box position="relative">
@@ -59,6 +59,7 @@ export default function ChoicePhone({ setPhoneModel, setPhoneId }) {
                         setPhoneModel={setPhoneModel}
                         phoneId={phone.id}
                         setPhoneId={setPhoneId} // setPhoneId를 Phone 컴포넌트에 전달
+                        goToSection={goToSection}
                     />
                 ))}
             </Box>
