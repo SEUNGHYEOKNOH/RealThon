@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Flex, Text, Button, Icon, useBreakpointValue, VStack } from '@chakra-ui/react';
 import { RxHamburgerMenu } from "react-icons/rx";
-import { LuX } from 'react-icons/lu';
 
 function Header({ isLoggedIn, onSignIn, onLogout, goToSection, currentSectionIndex, isMenuOpen, setIsMenuOpen }) {
     const isMobile = useBreakpointValue({ base: true, md: false });
-    const menuColor = currentSectionIndex >= 2 ? "black" : "#e4eafa";
+    const menuColor = currentSectionIndex >= 1 ? "black" : "#e4eafa";
 
     const toggleMenu = () => {
         console.log("Toggle Menu Clicked");
