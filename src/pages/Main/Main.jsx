@@ -138,7 +138,7 @@ export default function Main() {
                         <ChoicePhone setPhoneModel={setPhoneModel} setPhoneId={setPhoneId} goToSection={goToSection} />
                     </div>
                     <div className={`${styles.scrollSection} ${styles.contentBackground}`} ref={(el) => (sectionRefs.current[3] = el)}>
-                        <SelectPhone PhoneModel={PhoneModel} phoneId={phoneId} />
+                        <SelectPhone PhoneModel={PhoneModel} phoneId={phoneId} goToSection={goToSection} currentSectionIndex={currentSectionIndex} />
                     </div>
                     <div className={`${styles.scrollSection} ${styles.contentBackground}`} ref={(el) => (sectionRefs.current[4] = el)}>
                         <ActivityMap isLoggedIn={isLoggedIn} />

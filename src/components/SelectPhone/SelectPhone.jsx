@@ -5,7 +5,7 @@ import { Box, Flex, Image, Text, useBreakpointValue } from '@chakra-ui/react';
 import GetPhoneImg from "@/utils/GetPhoneImg.jsx"
 import { getCameraSetting } from "@/utils/Api.jsx";
 
-export default function SelectPhone({ PhoneModel, phoneId }) {
+export default function SelectPhone({ PhoneModel, phoneId, goToSection, currentSectionIndex }) {
     const isMobile = useBreakpointValue({ base: true, md: false });
 
     const [phoneImage, setPhoneImage] = useState(GetPhoneImg(""));
@@ -16,6 +16,13 @@ export default function SelectPhone({ PhoneModel, phoneId }) {
             setPhoneImage(GetPhoneImg(PhoneModel));
         }
     }, [PhoneModel]);
+
+    useEffect(() => {
+        if (currentSectionIndex === 3 && (!PhoneModel || PhoneModel === "" || phoneId === 0 || phoneId === undefined)) {
+            alert("디바이스를 먼저 선택해주세요!");
+            goToSection(2); // 디바이스 선택 섹션으로 이동
+        }
+    }, [PhoneModel, phoneId, goToSection]);
 
 
     // 이거 참고해서 작성하면 될 듯
