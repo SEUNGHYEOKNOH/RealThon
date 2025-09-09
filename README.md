@@ -1,12 +1,23 @@
-# React + Vite
+# RealThon Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+RealThon 프로젝트의 프론트엔드 애플리케이션입니다.
 
-Currently, two official plugins are available:
+## 기술 스택
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React + Vite
+- JavaScript
+- CSS Modules
 
-## Expanding the ESLint configuration
+## 프로젝트 구조
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- `src/components/` - React 컴포넌트들
+- `src/pages/` - 페이지 컴포넌트들
+- `src/assets/` - 이미지 및 정적 자원들
+- `src/utils/` - 유틸리티 함수들
+
+## 실행 방법
+
+```bash
+npm install
+npm run dev
+```
